@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="styles.index.css">
+</head>
+
+<body class="backgroundAni">
+  <div class="center">
+    <div id="login-div" class="boxoutline">
+      <h1 id="login-header">Login</h1>
+      <form id="login-form" action="/login" method="post">
+        <fieldset>
+          <legend><label for="email">Email:</label><br></legend>
+          <input type="text" id="email" name="email"><br>
+        </fieldset>
+        <fieldset>
+          <legend><label for="password">Password:</label><br></legend>
+          <input type="password" id="password" name="password"><br>
+        </fieldset>
+        <br>
+        <input type="submit" value="Submit">
+      </form>
+      <br>
+      <a href="#" onclick="showSignup()">Don't have an account? Sign Up</a>
+    </div>
+    <div id="signup-div" style="display:none;" class="boxoutline">
+      <h1 id="signup-header">Signup</h1>
+      <form id="signup-form" action="/signup" method="post">
+        <fieldset>
+          <legend><label for="name">Name:</label><br></legend>
+          <input type="text" id="name" name="name"><br>
+        </fieldset>
+        <fieldset>
+          <legend><label for="email">Email:</label><br></legend>
+          <input type="text" id="email" name="email"><br>
+        </fieldset>
+        <fieldset>
+          <legend><label for="password">Password:</label><br></legend>
+          <input type="password" id="password" name="password"><br>
+        </fieldset>
+        <br>
+        <input type="submit" value="Signup">
+      </form>
+      <br>
+      <a href="#" onclick="showLogin()" style="display:none;">Already have an account? Login</a>
+    </div>
+  </div>
+
+  <script>
+    function showSignup() {
+      document.getElementById("login-div").style.display = "none";
+      document.getElementById("signup-div").style.display = "block";
+      document.querySelector("a[onclick='showSignup()']").style.display = "none";
+      document.querySelector("a[onclick='showLogin()']").style.display = "block";
+    }
+
+    function showLogin() {
+      document.getElementById("signup-div").style.display = "none";
+      document.getElementById("login-div").style.display = "block";
+      document.querySelector("a[onclick='showLogin()']").style.display = "none";
+      document.querySelector("a[onclick='showSignup()']").style.display = "block";
+    }
+  </script>
+</body>
+
+</html>
