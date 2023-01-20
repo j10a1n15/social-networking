@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Home</title>
+
+  <script>
+    fetch('/get_extra_data')
+      .then(response => response.json())
+      .then(data => {
+        // use the data to display or manipulate the page
+        console.log(data);
+        document.body.appendChild(document.createTextNode(data));
+      })
+  </script>
+</head>
+
+<body>
+  <h1>Hi</h1>
+</body>
+
+</html>
