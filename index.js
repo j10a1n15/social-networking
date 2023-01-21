@@ -1,8 +1,25 @@
 const express = require('express');
 const session = require('express-session');
+const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+require('dotenv').config();
+const User = require('./model/User');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.DATABASE_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+mongoose.set('strictQuery', false);
+connectDB();
 
 app.use(express.static('public'));
 
@@ -15,29 +32,44 @@ app.use(session({
     saveUninitialized: true
 }))
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
-    // do something with the form data, like checking the email and password against a database
-    // if the email and password match, set up a session and redirect the user to the dashboard
-    // if the email and password don't match, redirect the user back to the login page
 
     req.session.extra_data = { email: email, password: password };
     res.redirect('/dashboard.html');
 });
 
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
+
+    const duplicate = await User.findOne({ email: email }).exec();
+    if(duplicate) return res.sendStatus(409);
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create({
+            email: email,
+            password: hashedPassword,
+            name: name,
+        });
+
+        console.log(user)
+
+        res.sendStatus(201)
+    } catch(err) {
+        console.error(err)
+        res.sendStatus(500)
+    }
 });
 
 app.get('/get_extra_data', (req, res) => {
-    console.log(req.session.extra_data)
     res.json(req.session.extra_data);
 })
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+mongoose.connection.once("open", () => {
+    console.log("MongoDB database connection established successfully");
+    app.listen(port, () => console.log(`Server listening on port ${port}`));
 });
