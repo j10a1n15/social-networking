@@ -49,11 +49,13 @@
   </div>
 
   <script>
+    document.getElementById("password").placeholder = "Length between 8 and 32 characters, at least one Upper/Lowercase letter and one number";
     function showSignup() {
       document.getElementById("login-div").style.display = "none";
       document.getElementById("signup-div").style.display = "block";
       document.querySelector("a[onclick='showSignup()']").style.display = "none";
       document.querySelector("a[onclick='showLogin()']").style.display = "block";
+      document.title = "Signup";
     }
 
     function showLogin() {
@@ -61,6 +63,7 @@
       document.getElementById("login-div").style.display = "block";
       document.querySelector("a[onclick='showLogin()']").style.display = "none";
       document.querySelector("a[onclick='showSignup()']").style.display = "block";
+      document.title = "Login";
     }
   </script>
 </body>

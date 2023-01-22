@@ -36,6 +36,11 @@ app.post('/login', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    const user = await User.findOne({ email: email }).exec();
+    if (!user) return res.sendStatus(404);
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.sendStatus(401);
+
     req.session.extra_data = { email: email, password: password };
     res.redirect('/dashboard.html');
 });
@@ -45,8 +50,11 @@ app.post("/signup", async (req, res) => {
     const password = req.body.password;
     const name = req.body.name;
 
+    if(!isValidEmail(email)) return res.sendStatus(400);
+    if(!isValidPassword(password)) return res.sendStatus(400);
+
     const duplicate = await User.findOne({ email: email }).exec();
-    if(duplicate) return res.sendStatus(409);
+    if (duplicate) return res.sendStatus(409);
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -59,7 +67,7 @@ app.post("/signup", async (req, res) => {
         console.log(user)
 
         res.sendStatus(201)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
         res.sendStatus(500)
     }
@@ -73,3 +81,13 @@ mongoose.connection.once("open", () => {
     console.log("MongoDB database connection established successfully");
     app.listen(port, () => console.log(`Server listening on port ${port}`));
 });
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPassword(password) {
+    return password.length >= 8 && password.length <= 32 && /[^a-zA-Z0-9]/.test(password);
+}
+
+//https://cloud.mongodb.com/v2/63cbe80f439b2836a3661721#/metrics/replicaSet/63cbe84ff5fe8912a4676111/explorer/Users/users/find
