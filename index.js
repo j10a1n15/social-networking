@@ -37,39 +37,43 @@ app.post('/login', async (req, res) => {
     const password = req.body.password;
 
     const user = await User.findOne({ email: email }).exec();
-    if (!user) return res.sendStatus(404);
+    if (!user) return res.json({ error: "Incorrect Email or password" });
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.sendStatus(401);
+    if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    req.session.extra_data = { email: email, password: password };
-    res.redirect('/dashboard.html');
+    req.session.extra_data = { displayName: user.displayName, name: user.name, email: user.email };
+    res.json({ success: "Logged in successfully" });
 });
 
 app.post("/signup", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
+    const displayName = req.body.displayName;
 
-    if(!isValidEmail(email)) return res.sendStatus(400);
-    if(!isValidPassword(password)) return res.sendStatus(400);
+    if(!isValidId(name)) return res.json({ error: "Invalid Display Name" });
+    if (!isValidEmail(email)) return res.json({ error: "Invalid Email" });
+    if (!isValidPassword(password)) return res.json({ error: "Invalid Password" })
 
-    const duplicate = await User.findOne({ email: email }).exec();
-    if (duplicate) return res.sendStatus(409);
+    const duplicateEmail = await User.findOne({ email: email }).exec();
+    if (duplicateEmail) return res.json({ error: "Email already exists" });
+    const duplicateName = await User.findOne({ name: name }).exec();
+    if (duplicateName) return res.json({ error: "Name already exists" });
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({
+            displayName: displayName,
             email: email,
             password: hashedPassword,
             name: name,
         });
 
-        console.log(user)
-
-        res.sendStatus(201)
+        req.session.extra_data = { displayName: user.displayName, name: user.name, email: user.email };
+        res.json({ success: "User created successfully" });
     } catch (err) {
         console.error(err)
-        res.sendStatus(500)
+        res.json({ error: "Something went wrong" });
     }
 });
 
@@ -87,7 +91,9 @@ function isValidEmail(email) {
 }
 
 function isValidPassword(password) {
-    return password.length >= 8 && password.length <= 32 && /[^a-zA-Z0-9]/.test(password);
+    return password.length >= 8 && password.length <= 32 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/.test(password);
 }
 
-//https://cloud.mongodb.com/v2/63cbe80f439b2836a3661721#/metrics/replicaSet/63cbe84ff5fe8912a4676111/explorer/Users/users/find
+function isValidId(name) {
+    return name.length >= 3 && name.length <= 32 && /^[a-z0-9]+$/.test(name)
+}
