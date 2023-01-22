@@ -2,6 +2,8 @@
 My own take at a stupid social networking plattform for a school project.
 I do not plan to become the next Meta or anything, yea
 
+Also get ready for some shitty code in here, prepare mentally!
+
 ## Requirements
 1. Node.js 0.10 or higher
 
