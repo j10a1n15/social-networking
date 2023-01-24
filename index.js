@@ -1,36 +1,15 @@
 const express = require('express');
-const session = require('express-session');
 const bcrypt = require('bcrypt');
-const mongoose = require("mongoose");
 require('dotenv').config();
 const User = require('./model/User');
+const loadEvents = require('./events/loader');
+const utils = require('./events/utils');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.DATABASE_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-    } catch (err) {
-        console.log(err.message);
-    }
-}
-mongoose.set('strictQuery', false);
-connectDB();
+loadEvents(app, port);
 
-app.use(express.static('public'));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true
-}))
 
 app.post('/login', async (req, res) => {
     const email = req.body.email;
@@ -51,9 +30,9 @@ app.post("/signup", async (req, res) => {
     const name = req.body.name;
     const displayName = req.body.displayName;
 
-    if(!isValidId(name)) return res.json({ error: "Invalid Display Name" });
-    if (!isValidEmail(email)) return res.json({ error: "Invalid Email" });
-    if (!isValidPassword(password)) return res.json({ error: "Invalid Password" })
+    if(!utils.isValidId(name)) return res.json({ error: "Invalid Display Name" });
+    if (!utils.isValidEmail(email)) return res.json({ error: "Invalid Email" });
+    if (!utils.isValidPassword(password)) return res.json({ error: "Invalid Password" })
 
     const duplicateEmail = await User.findOne({ email: email }).exec();
     if (duplicateEmail) return res.json({ error: "Email already exists" });
@@ -80,20 +59,3 @@ app.post("/signup", async (req, res) => {
 app.get('/get_extra_data', (req, res) => {
     res.json(req.session.extra_data);
 })
-
-mongoose.connection.once("open", () => {
-    console.log("MongoDB database connection established successfully");
-    app.listen(port, () => console.log(`Server listening on port ${port}`));
-});
-
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function isValidPassword(password) {
-    return password.length >= 8 && password.length <= 32 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/.test(password);
-}
-
-function isValidId(name) {
-    return name.length >= 3 && name.length <= 32 && /^[a-z0-9]+$/.test(name)
-}
