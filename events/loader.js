@@ -6,7 +6,7 @@ require('dotenv').config();
 module.exports = function (app, port) {
     const connectDB = async () => {
         try {
-            await mongoose.connect(process.env.DATABASE_URI, {
+            mongoose.connect(process.env.DATABASE_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
@@ -17,7 +17,8 @@ module.exports = function (app, port) {
     mongoose.set('strictQuery', false);
     connectDB();
     
-    app.use(express.static('public'));
+    app.use(express.static('public', { extensions: ['html'] }));
+    app.use(express.static('assets'));
     
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

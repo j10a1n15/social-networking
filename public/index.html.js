@@ -62,7 +62,7 @@ function sendAccountData(url, body) {
         .then(data => {
             console.log(data);
             if (data.success) {
-                window.location.href = "/dashboard.html";
+                window.location.href = "/dashboard";
             } else {
                 //Rewrite this to some css magic
                 alert(data.error);
