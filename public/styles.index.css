@@ -61,3 +61,51 @@ input[type=number]:focus {
         background-position: 0% 50%;
     }
 }
+
+
+/*requirements*/
+.neutral {
+    color: rgb(100, 100, 100);
+}
+
+.neutral:before {
+    position: relative;
+    left: -5px;
+    content: "●";
+}
+
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -5px;
+    content: "✔";
+}
+
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -5px;
+    content: "✖";
+}
+
+#passwordReq {
+    display: none;
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 5px;
+}
+
+#nameReq {
+    display: none;
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 5px;
+}

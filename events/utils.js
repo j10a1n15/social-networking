@@ -3,7 +3,7 @@ function isValidEmail(email) {
 }
 
 function isValidPassword(password) {
-    return password.length >= 8 && password.length <= 32 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/.test(password);
+    return password.length >= 8 && /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/.test(password);
 }
 
 function isValidId(name) {
