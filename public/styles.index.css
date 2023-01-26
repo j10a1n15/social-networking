@@ -81,17 +81,17 @@ input[type=number]:focus {
 .valid:before {
     position: relative;
     left: -5px;
-    content: "✔";
+    content: "●";
 }
 
 .invalid {
-    color: red;
+    color: rgb(129, 129, 129);
 }
 
 .invalid:before {
     position: relative;
     left: -5px;
-    content: "✖";
+    content: "●";
 }
 
 #passwordReq {
