@@ -44,23 +44,23 @@ window.onload = function () {
 
 
     /*name req*/
-    const name = document.getElementById("name-signup");
-    const nameReq = document.getElementById("nameReq");
+    const nameReqInput = document.getElementById("name-signup");
+    const nameReqP = document.getElementById("nameReq");
 
-    name.onfocus = function () {
-        nameReq.style.display = "block";
+    nameReqInput.onfocus = function () {
+        nameReqP.style.display = "block";
     }
 
-    name.onblur = async function () {
-        nameReq.style.display = "none";
+    nameReqInput.onblur = async function () {
+        nameReqP.style.display = "none";
 
         sendAccountData('/check_if_duplicate_name', {
-            name: name.value
+            name: nameReqInput.value
         }).then(function (data) {
             if (data.success) {
-                name.classList.remove("invalidBox");
+                nameReqInput.classList.remove("invalidBox");
             } else {
-                name.classList.add("invalidBox");
+                nameReqInput.classList.add("invalidBox");
             }
         });
     }
@@ -70,92 +70,92 @@ window.onload = function () {
     }
 
     /*email req*/
-    const email = document.getElementById("email-signup");
-    const emailReq = document.getElementById("emailReq");
-    const emailP = document.getElementById("emailFormat");
+    const emailReqInput = document.getElementById("email-signup");
+    const emailReqText = document.getElementById("emailReq");
+    const emailReqP = document.getElementById("emailFormat");
 
-    email.onfocus = function () {
-        emailReq.style.display = "block";
+    emailReqInput.onfocus = function () {
+        emailReqText.style.display = "block";
     }
 
-    email.onblur = function () {
-        emailReq.style.display = "none";
+    emailReqInput.onblur = function () {
+        emailReqText.style.display = "none";
     }
 
-    email.onkeyup = function () {
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-            emailP.classList.remove("invalid");
-            emailP.classList.add("valid");
-            email.classList.remove("invalidBox");
+    emailReqInput.onkeyup = function () {
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailReqInput.value)) {
+            emailReqP.classList.remove("invalid");
+            emailReqP.classList.add("valid");
+            emailReqInput.classList.remove("invalidBox");
         } else {
-            emailP.classList.remove("valid");
-            emailP.classList.add("invalid");
-            email.classList.add("invalidBox");
+            emailReqP.classList.remove("valid");
+            emailReqP.classList.add("invalid");
+            emailReqInput.classList.add("invalidBox");
         }
     }
 
 
     /*password req*/
-    const input = document.getElementById("password-signup");
-    const letter = document.getElementById("letter");
-    const capital = document.getElementById("capital");
-    const number = document.getElementById("number");
-    const length = document.getElementById("length");
-    const message = document.getElementById("passwordReq");
+    const passwordReqInput = document.getElementById("password-signup");
+    const passwordReqLower = document.getElementById("lower");
+    const passwordReqCapital = document.getElementById("capital");
+    const passwordReqNumb = document.getElementById("number");
+    const passwordReqLength = document.getElementById("length");
+    const passwordReqP = document.getElementById("passwordReq");
 
-    input.onfocus = function () {
-        message.style.display = "block";
+    passwordReqInput.onfocus = function () {
+        passwordReqP.style.display = "block";
     }
 
-    input.onblur = function () {
-        message.style.display = "none";
+    passwordReqInput.onblur = function () {
+        passwordReqP.style.display = "none";
     }
 
     // When the user starts to type something inside the password field
-    input.onkeyup = function () {
+    passwordReqInput.onkeyup = function () {
         // Validate lowercase letters
         var lowerCaseLetters = /[a-z]/g;
-        if (input.value.match(lowerCaseLetters)) {
-            letter.classList.remove("invalid");
-            letter.classList.add("valid");
+        if (passwordReqInput.value.match(lowerCaseLetters)) {
+            passwordReqLower.classList.remove("invalid");
+            passwordReqLower.classList.add("valid");
         } else {
-            letter.classList.remove("valid");
-            letter.classList.add("invalid");
+            passwordReqLower.classList.remove("valid");
+            passwordReqLower.classList.add("invalid");
         }
 
         // Validate capital letters
         var upperCaseLetters = /[A-Z]/g;
-        if (input.value.match(upperCaseLetters)) {
-            capital.classList.remove("invalid");
-            capital.classList.add("valid");
+        if (passwordReqInput.value.match(upperCaseLetters)) {
+            passwordReqCapital.classList.remove("invalid");
+            passwordReqCapital.classList.add("valid");
         } else {
-            capital.classList.remove("valid");
-            capital.classList.add("invalid");
+            passwordReqCapital.classList.remove("valid");
+            passwordReqCapital.classList.add("invalid");
         }
 
         // Validate numbers
         var numbers = /[0-9]/g;
-        if (input.value.match(numbers)) {
-            number.classList.remove("invalid");
-            number.classList.add("valid");
+        if (passwordReqInput.value.match(numbers)) {
+            passwordReqNumb.classList.remove("invalid");
+            passwordReqNumb.classList.add("valid");
         } else {
-            number.classList.remove("valid");
-            number.classList.add("invalid");
+            passwordReqNumb.classList.remove("valid");
+            passwordReqNumb.classList.add("invalid");
         }
 
         // Validate length
-        if (input.value.length >= 8) {
-            length.classList.remove("invalid");
-            length.classList.add("valid");
+        if (passwordReqInput.value.length >= 8) {
+            passwordReqLength.classList.remove("invalid");
+            passwordReqLength.classList.add("valid");
         } else {
-            length.classList.remove("valid");
-            length.classList.add("invalid");
+            passwordReqLength.classList.remove("valid");
+            passwordReqLength.classList.add("invalid");
         }
 
-        if (input.value.length >= 8 && input.value.match(numbers) && input.value.match(upperCaseLetters) && input.value.match(lowerCaseLetters)) {
-            input.classList.remove("invalidBox");
+        if (passwordReqInput.value.length >= 8 && passwordReqInput.value.match(numbers) && passwordReqInput.value.match(upperCaseLetters) && passwordReqInput.value.match(lowerCaseLetters)) {
+            passwordReqInput.classList.remove("invalidBox");
         } else {
-            input.classList.add("invalidBox");
+            passwordReqInput.classList.add("invalidBox");
         }
     }
 }
