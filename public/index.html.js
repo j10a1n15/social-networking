@@ -1,6 +1,6 @@
 window.onload = function () {
     //Prevent form from submitting so we can use fetch
-    document.getElementById("signup-form").addEventListener("submit", function (event) {
+    document.getElementById("signup-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const displayName = document.getElementById("displayname-signup").value;
@@ -13,10 +13,16 @@ window.onload = function () {
             name: name,
             email: email,
             password: password
+        }).then(function (data) {
+            if (data.success) {
+                window.location.href = "/dashboard";
+            } else {
+                alert(data.message)
+            }
         });
     });
 
-    document.getElementById("login-form").addEventListener("submit", function (event) {
+    document.getElementById("login-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const email = document.getElementById("email-login").value;
@@ -25,9 +31,15 @@ window.onload = function () {
         sendAccountData('/login', {
             email: email,
             password: password
+        }).then(function (data) {
+            if (data.success) {
+                window.location.href = "/dashboard";
+            } else {
+                alert(data.message)
+            }
         });
     });
-    
+
 
     /*name req*/
     const name = document.getElementById("name-signup");
@@ -37,12 +49,22 @@ window.onload = function () {
         nameReq.style.display = "block";
     }
 
-    name.onblur = function () {
+    name.onblur = async function () {
         nameReq.style.display = "none";
+
+        sendAccountData('/check_if_duplicate_name', {
+            name: name.value
+        }).then(function (data) {
+            if (data.success) {
+                name.classList.remove("invalidBox");
+            } else {
+                name.classList.add("invalidBox");
+            }
+        });
     }
 
     name.onkeyup = function () {
-        name.value = name.value.replace(/[^a-z ]/g, "");
+        name.value = name.value.replace(/[A-Z ]/g, "");
     }
 
     /*email req*/
@@ -59,12 +81,14 @@ window.onload = function () {
     }
 
     email.onkeyup = function () {
-        if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
             emailP.classList.remove("invalid");
             emailP.classList.add("valid");
+            email.classList.remove("invalidBox");
         } else {
             emailP.classList.remove("valid");
             emailP.classList.add("invalid");
+            email.classList.add("invalidBox");
         }
     }
 
@@ -125,6 +149,12 @@ window.onload = function () {
             length.classList.remove("valid");
             length.classList.add("invalid");
         }
+
+        if (input.value.length >= 8 && input.value.match(numbers) && input.value.match(upperCaseLetters) && input.value.match(lowerCaseLetters)) {
+            input.classList.remove("invalidBox");
+        } else {
+            input.classList.add("invalidBox");
+        }
     }
 }
 
@@ -145,21 +175,19 @@ function showLogin() {
 }
 
 function sendAccountData(url, body) {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            if (data.success) {
-                window.location.href = "/dashboard";
-            } else {
-                //Rewrite this to some css magic
-                alert(data.error);
-            }
-        });
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                resolve(data);
+            });
+    });
 }

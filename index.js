@@ -30,7 +30,7 @@ app.post("/signup", async (req, res) => {
     const name = req.body.name;
     const displayName = req.body.displayName;
 
-    if(!utils.isValidId(name)) return res.json({ error: "Invalid Display Name" });
+    if (!utils.isValidId(name)) return res.json({ error: "Invalid Display Name" });
     if (!utils.isValidEmail(email)) return res.json({ error: "Invalid Email" });
     if (!utils.isValidPassword(password)) return res.json({ error: "Invalid Password" })
 
@@ -54,6 +54,14 @@ app.post("/signup", async (req, res) => {
         console.error(err)
         res.json({ error: "Something went wrong" });
     }
+});
+
+app.post('/check_if_duplicate_name', async (req, res) => {
+    const name = req.body.name;
+    
+    const user = await User.findOne({ name: name }).exec();
+    if (user) return res.json({ error: "Name already exists" });
+    res.json({ success: "Name is available" });
 });
 
 app.get('/get_extra_data', (req, res) => {
