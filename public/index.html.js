@@ -25,6 +25,8 @@ window.onload = function () {
     document.getElementById("login-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 
+        document.getElementById("login-error").style = "display: none;";
+
         const email = document.getElementById("email-login").value;
         const password = document.getElementById("password-login").value;
 
@@ -35,7 +37,7 @@ window.onload = function () {
             if (data.success) {
                 window.location.href = "/dashboard";
             } else {
-                alert(data.message)
+                document.getElementById("login-error").style = "display: block;";
             }
         });
     });
