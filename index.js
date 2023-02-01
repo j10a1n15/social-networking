@@ -11,6 +11,17 @@ const port = process.env.PORT || 3000;
 loadEvents(app, port);
 
 
+app.get('/user/*', async (req, res) => {
+    const requestedUser = await User.findOne({ name: req.params[0] }).exec();
+    if (!requestedUser) return res.redirect('/404.html');
+
+    req.session.extra_data = req.session.extra_data || {};
+
+    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email };
+
+    res.sendFile(__dirname + '/public/user.html');
+})
+
 app.post('/login', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -20,7 +31,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    req.session.extra_data = { displayName: user.displayName, name: user.name, email: user.email };
+    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email } };
     res.json({ success: "Logged in successfully" });
 });
 
@@ -48,7 +59,7 @@ app.post("/signup", async (req, res) => {
             name: name,
         });
 
-        req.session.extra_data = { displayName: user.displayName, name: user.name, email: user.email };
+        req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email } };
         res.json({ success: "User created successfully" });
     } catch (err) {
         console.error(err)
@@ -70,5 +81,5 @@ app.get('/get_extra_data', (req, res) => {
 
 //The 404 Route
 app.get('*', function (req, res) {
-    res.status(404).sendFile(__dirname + '/public/404.html');
+    res.status(404).redirect('/404.html');
 });

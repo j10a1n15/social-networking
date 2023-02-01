@@ -9,10 +9,17 @@ window.onload = function () {
             }
 
             const ownProfile = data.ownProfile;
+            const requestedProfile = data.requestedUser;
+
+            if (!ownProfile) return document.location = '/';
+            if (!requestedProfile) return document.location = '/home';
 
             const h1 = document.createElement('h1');
+            const h2 = document.createElement('h2');
             h1.appendChild(document.createTextNode(`Hello, ${ownProfile.displayName} (${ownProfile.name})!`));
+            h2.appendChild(document.createTextNode(`You are viewing ${requestedProfile.displayName} (${requestedProfile.name})'s profile`));
             document.getElementById("main").appendChild(h1);
+            document.getElementById("main").appendChild(h2);
 
             //Listmenu Buttons
             const listHome = document.getElementById('listHome');
