@@ -58,7 +58,7 @@ app.post("/signup", async (req, res) => {
 
 app.post('/check_if_duplicate_name', async (req, res) => {
     const name = req.body.name;
-    
+
     const user = await User.findOne({ name: name }).exec();
     if (user) return res.json({ error: "Name already exists" });
     res.json({ success: "Name is available" });
@@ -67,3 +67,8 @@ app.post('/check_if_duplicate_name', async (req, res) => {
 app.get('/get_extra_data', (req, res) => {
     res.json(req.session.extra_data);
 })
+
+//The 404 Route
+app.get('*', function (req, res) {
+    res.status(404).sendFile(__dirname + '/public/404.html');
+});

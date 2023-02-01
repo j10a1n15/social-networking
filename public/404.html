@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Unknown Site</title>
+    <style>
+        .backgroundAni {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .boxoutline {
+            border: 2px dashed #000;
+            padding: 20px;
+            margin: 10px;
+            box-sizing: border-box;
+            border-radius: 1.5em;
+            background-color: whitesmoke;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .center>h1,
+        .center>a,
+        .center>p,
+        .center>img {
+            text-align: center;
+        }
+
+        .image {
+            width: 50%;
+            animation: moveDown 10s ease-in-out infinite;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        @keyframes moveDown {
+            0% {
+                transform: translateY(-60px);
+            }
+
+            50% {
+                transform: translateY(80px);
+            }
+
+            100% {
+                transform: translateY(-60px);
+            }
+        }
+
+        #helpIWannaLeave{
+            text-decoration: none;
+            color: #000;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 10px;
+            border: 2px solid #000;
+            border-radius: 1.5em;
+            transition: 0.5s;
+            z-index: 100;
+        }
+
+        #helpIWannaLeave:hover{
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+    <link rel="icon" href="logo/logo_trans_no-text.ico">
+</head>
+
+<body class="backgroundAni">
+    <div class="center">
+        <div class="boxoutline center">
+            <h1>Looks like the feather hit the ground</h1>
+            <p>And we were not able to find your URL</p>
+            <img src="logo/logo_trans_no-text.png" class="image">
+            <a id="helpIWannaLeave" href="/">Go back to home</a>
+        </div>
+    </div>
+</body>
+
+</html>
