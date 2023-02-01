@@ -15,7 +15,7 @@ window.onload = function () {
             password: password
         }).then(function (data) {
             if (data.success) {
-                window.location.href = "/dashboard";
+                window.location.href = "/home";
             } else {
                 alert(data.message)
             }
@@ -35,7 +35,7 @@ window.onload = function () {
             password: password
         }).then(function (data) {
             if (data.success) {
-                window.location.href = "/dashboard";
+                window.location.href = "/home";
             } else {
                 document.getElementById("login-error").style = "display: block;";
             }
