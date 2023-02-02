@@ -44,6 +44,7 @@ app.post("/signup", async (req, res) => {
     if (!utils.isValidId(name)) return res.json({ error: "Invalid Display Name" });
     if (!utils.isValidEmail(email)) return res.json({ error: "Invalid Email" });
     if (!utils.isValidPassword(password)) return res.json({ error: "Invalid Password" })
+    if(utils.containsInvalidCharacters(name)) return res.json({ error: "Invalid Name" });
 
     const duplicateEmail = await User.findOne({ email: email }).exec();
     if (duplicateEmail) return res.json({ error: "Email already exists" });

@@ -65,8 +65,9 @@ window.onload = function () {
         });
     }
 
-    name.onkeyup = function () {
-        name.value = name.value.replace(/[A-Z ]/g, "");
+    nameReqInput.onkeyup = function () {
+        nameReqInput.value = nameReqInput.value.replace(/[A-Z ]/g, "");
+        nameReqInput.value = nameReqInput.value.replace(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, "");
     }
 
     /*email req*/
