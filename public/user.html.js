@@ -14,12 +14,7 @@ window.onload = function () {
             if (!ownProfile) return document.location = '/';
             if (!requestedProfile) return document.location = '/home';
 
-            const h1 = document.createElement('h1');
-            const h2 = document.createElement('h2');
-            h1.appendChild(document.createTextNode(`Hello, ${ownProfile.displayName} (${ownProfile.name})!`));
-            h2.appendChild(document.createTextNode(`You are viewing ${requestedProfile.displayName} (${requestedProfile.name})'s profile`));
-            document.getElementById("main").appendChild(h1);
-            document.getElementById("main").appendChild(h2);
+            console.log(`${ownProfile.name} is now viewing ${requestedProfile.name}'s profile`);
 
             //Listmenu Buttons
             const listHome = document.getElementById('listHome');
@@ -39,5 +34,12 @@ window.onload = function () {
             listSettings.addEventListener('click', () => {
                 document.location = '/settings';
             });
+
+            //Profile Info
+            const profileDisplayName = document.getElementById('profileDisplayName');
+            const profileName = document.getElementById('profileName');
+
+            profileDisplayName.appendChild(document.createTextNode(requestedProfile.displayName));
+            profileName.appendChild(document.createTextNode(requestedProfile.name));
         });
 };
