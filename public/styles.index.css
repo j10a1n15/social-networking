@@ -22,7 +22,7 @@ input[type=number]:focus {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* height: 50vh; */
+    height: 80%
 }
 
 .center>form,

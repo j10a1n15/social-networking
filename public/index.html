@@ -10,64 +10,66 @@
 
 <body class="backgroundAni">
   <div class="center">
+    <div class="boxoutline">
+      <h1>Lightweight</h1>
 
-    <div id="login-div" class="boxoutline">
-      <h1 id="login-header">Login</h1>
-      <form id="login-form" action="/login" method="post">
-        <fieldset>
-          <legend><label for="email">Email:</label><br></legend>
-          <input type="text" id="email-login" name="email"><br>
-        </fieldset>
-        <fieldset>
-          <legend><label for="password">Password:</label><br></legend>
-          <input type="password" id="password-login" name="password"><br>
-        </fieldset>
+      <div id="login-div">
+        <h2 id="login-header">Login</h2>
+        <form id="login-form" action="/login" method="post">
+          <fieldset>
+            <legend><label for="email">Email:</label><br></legend>
+            <input type="text" id="email-login" name="email"><br>
+          </fieldset>
+          <fieldset>
+            <legend><label for="password">Password:</label><br></legend>
+            <input type="password" id="password-login" name="password"><br>
+          </fieldset>
+          <br>
+          <p id="login-error" style="display: none;">Incorrect Email or password</p>
+          <br>
+          <input type="submit" value="Submit">
+        </form>
         <br>
-        <p id="login-error" style="display: none;">Incorrect Email or password</p>
+        <a href="#" onclick="showSignup()">Don't have an account? Sign Up</a>
+      </div>
+
+      <div id="signup-div" style="display:none;">
+        <h2 id="signup-header">Signup</h2>
+        <form id="signup-form" action="/signup" method="post">
+          <fieldset>
+            <legend><label for="name">Displayname:</label><br></legend>
+            <input type="text" id="displayname-signup" name="name"><br>
+          </fieldset>
+          <fieldset>
+            <legend><label for="name">Name:</label><br></legend>
+            <input type="text" id="name-signup" name="name"><br>
+            <div id="nameReq" style="display: none;">
+              <p id="lowercase" class="neutral">Only <b>lowercase</b> letters</p>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend><label for="email">Email:</label><br></legend>
+            <input type="text" id="email-signup" name="email"><br>
+            <div id="emailReq" style="display: none;">
+              <p id="emailFormat" class="invalid">Must be a <b>valid email</b></p>
+          </fieldset>
+          <fieldset>
+            <legend><label for="password">Password:</label><br></legend>
+            <input type="password" id="password-signup" name="password"><br>
+            <div id="passwordReq" style="display: none;">
+              <p id="lower" class="invalid">A <b>lowercase</b> letter</p>
+              <p id="capital" class="invalid">A <b>uppercase</b> letter</p>
+              <p id="number" class="invalid">A <b>number</b></p>
+              <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+            </div>
+          </fieldset>
+          <br>
+          <input type="submit" value="Signup">
+        </form>
         <br>
-        <input type="submit" value="Submit">
-      </form>
-      <br>
-      <a href="#" onclick="showSignup()">Don't have an account? Sign Up</a>
+        <a href="#" onclick="showLogin()" style="display:none;">Already have an account? Login</a>
+      </div>
     </div>
-
-    <div id="signup-div" style="display:none;" class="boxoutline">
-      <h1 id="signup-header">Signup</h1>
-      <form id="signup-form" action="/signup" method="post">
-        <fieldset>
-          <legend><label for="name">Displayname:</label><br></legend>
-          <input type="text" id="displayname-signup" name="name"><br>
-        </fieldset>
-        <fieldset>
-          <legend><label for="name">Name:</label><br></legend>
-          <input type="text" id="name-signup" name="name"><br>
-          <div id="nameReq" style="display: none;">
-            <p id="lowercase" class="neutral">Only <b>lowercase</b> letters</p>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend><label for="email">Email:</label><br></legend>
-          <input type="text" id="email-signup" name="email"><br>
-          <div id="emailReq" style="display: none;">
-            <p id="emailFormat" class="invalid">Must be a <b>valid email</b></p>
-        </fieldset>
-        <fieldset>
-          <legend><label for="password">Password:</label><br></legend>
-          <input type="password" id="password-signup" name="password"><br>
-          <div id="passwordReq" style="display: none;">
-            <p id="lower" class="invalid">A <b>lowercase</b> letter</p>
-            <p id="capital" class="invalid">A <b>uppercase</b> letter</p>
-            <p id="number" class="invalid">A <b>number</b></p>
-            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
-          </div>
-        </fieldset>
-        <br>
-        <input type="submit" value="Signup">
-      </form>
-      <br>
-      <a href="#" onclick="showLogin()" style="display:none;">Already have an account? Login</a>
-    </div>
-
   </div>
 </body>
 
