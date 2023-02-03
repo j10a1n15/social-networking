@@ -17,3 +17,4 @@ function containsInvalidCharacters(str) {
 module.exports.isValidEmail = isValidEmail;
 module.exports.isValidPassword = isValidPassword;
 module.exports.isValidId = isValidId;
+module.exports.containsInvalidCharacters = containsInvalidCharacters;
