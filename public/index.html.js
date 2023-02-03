@@ -67,7 +67,7 @@ window.onload = function () {
 
     nameReqInput.onkeyup = function () {
         nameReqInput.value = nameReqInput.value.replace(/[A-Z ]/g, "");
-        nameReqInput.value = nameReqInput.value.replace(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, "");
+        nameReqInput.value = nameReqInput.value.replace(/[ `!@#§$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, "");
     }
 
     /*email req*/
