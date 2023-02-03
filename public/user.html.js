@@ -35,6 +35,11 @@ window.onload = function () {
                 document.location = '/settings';
             });
 
+            if(ownProfile.name === requestedProfile.name) {
+                listProfile.classList.add('listSelected');
+            }
+
+
             //Profile Info
             const profileDisplayName = document.getElementById('profileDisplayName');
             const profileName = document.getElementById('profileName');

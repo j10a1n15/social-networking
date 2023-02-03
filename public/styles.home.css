@@ -75,3 +75,9 @@ body {
     padding-right: 5px;
     padding-left: 0;
 }
+
+
+.listSelected {
+    background-color: rgb(179, 179, 179);
+    border-radius: 100px;
+}
