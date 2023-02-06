@@ -68,6 +68,20 @@ app.post("/signup", async (req, res) => {
     }
 });
 
+app.post('/searchUser', async (req, res) => {
+    const name = req.body.name;
+
+    if(!name) return res.json({ error: "Please enter a name" });
+
+    let users = await User.find({ $or: [{ name: { $regex: name, $options: 'i' } }, { displayName: { $regex: name, $options: 'i' } }] }).exec();
+
+    users = users.map(user => {
+        return { name: user.name, displayName: user.displayName }
+    });
+
+    res.json({ users, success: "Users found" });
+})
+
 app.post('/check_if_duplicate_name', async (req, res) => {
     const name = req.body.name;
 
