@@ -89,7 +89,7 @@ window.onload = function () {
 
                         const searchResults = document.getElementById('searchResults');
 
-                        searchResults.innerHTML = "";
+                        searchResults.innerHTML = "<h1>Something went wrong.</h1>";
                     }
                 });
             }
