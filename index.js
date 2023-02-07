@@ -7,6 +7,7 @@ const utils = require('./events/utils');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const salt = process.env.SALT || 10;
 
 loadEvents(app, port);
 
@@ -52,7 +53,7 @@ app.post("/signup", async (req, res) => {
     if (duplicateName) return res.json({ error: "Name already exists" });
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, salt);
         const user = await User.create({
             displayName: displayName,
             email: email,
