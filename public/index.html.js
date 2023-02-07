@@ -8,6 +8,11 @@ window.onload = function () {
         const email = document.getElementById("email-signup").value;
         const password = document.getElementById("password-signup").value;
 
+        document.getElementById("email-signup").classList.remove("invalidBox");
+        document.getElementById("name-signup").classList.remove("invalidBox");
+        document.getElementById("emailAlreadyExists").style = "display: none;";
+        document.getElementById("nameAlreadyExists").style = "display: none;";
+
         sendAccountData('/signup', {
             displayName: displayName,
             name: name,
@@ -17,7 +22,14 @@ window.onload = function () {
             if (data.success) {
                 window.location.href = "/home";
             } else {
-                alert(data.message)
+                if (data.error == "Email already exists") {
+                    document.getElementById("email-signup").classList.add("invalidBox");
+                    document.getElementById("emailAlreadyExists").style = "display: block;";
+                }
+                if (data.error == "Name already exists") {
+                    document.getElementById("name-signup").classList.add("invalidBox");
+                    document.getElementById("nameAlreadyExists").style = "display: block;";
+                }
             }
         });
     });
@@ -49,6 +61,7 @@ window.onload = function () {
 
     nameReqInput.onfocus = function () {
         nameReqP.style.display = "block";
+        document.getElementById("nameAlreadyExists").style = "display: none;";
     }
 
     nameReqInput.onblur = async function () {
@@ -77,6 +90,7 @@ window.onload = function () {
 
     emailReqInput.onfocus = function () {
         emailReqText.style.display = "block";
+        document.getElementById("emailAlreadyExists").style = "display: none;";
     }
 
     emailReqInput.onblur = function () {
