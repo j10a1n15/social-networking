@@ -7,7 +7,7 @@ const utils = require('./events/utils');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const salt = process.env.SALT || 10;
+const salt = 10;
 
 loadEvents(app, port);
 
@@ -29,7 +29,7 @@ app.post('/login', async (req, res) => {
 
     const user = await User.findOne({ email: email }).exec();
     if (!user) return res.json({ error: "Incorrect Email or password" });
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compareSync(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
     req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email } };
