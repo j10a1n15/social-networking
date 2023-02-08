@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const User = require('./model/User');
 const loadEvents = require('./events/loader');
@@ -72,7 +73,7 @@ app.post("/signup", async (req, res) => {
 app.post('/searchUser', async (req, res) => {
     const name = req.body.name;
 
-    if(!name) return res.json({ error: "Please enter a name" });
+    if (!name) return res.json({ error: "Please enter a name" });
 
     let users = await User.find({ $or: [{ name: { $regex: name, $options: 'i' } }, { displayName: { $regex: name, $options: 'i' } }] }).exec();
 
@@ -82,6 +83,30 @@ app.post('/searchUser', async (req, res) => {
 
     res.json({ users, success: "Users found" });
 })
+
+app.post('/createPost', async (req, res) => {
+    const title = req.body.title;
+    const content = req.body.content;
+    const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
+
+    if (!title) return res.json({ error: "Please enter a title" });
+    if (!content) return res.json({ error: "Please enter some content" });
+    if (!user) return res.json({ error: "Please login" });
+
+    const filter = { name: req.session.extra_data.ownProfile.name }
+    const post = { title: title, content: content, id: uuidv4() };
+
+    try {
+        User.findOneAndUpdate(filter, { $push: { posts: { title: post } } }, { new: true }, (err, doc) => {
+            if (err) return res.json({ error: "Something went wrong" });
+            res.json({ success: "Post created successfully" });
+        });
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "Something went wrong" });
+    }
+});
+
 
 app.post('/check_if_duplicate_name', async (req, res) => {
     const name = req.body.name;
