@@ -13,6 +13,7 @@ window.onload = function () {
             //Listmenu Buttons
             const listHome = document.getElementById('listHome');
             const listSearch = document.getElementById('listSearch');
+            const listPost = document.getElementById('listPost');
             const listProfile = document.getElementById('listProfile');
             const listSettings = document.getElementById('listSettings');
 
@@ -21,6 +22,9 @@ window.onload = function () {
             });
             listSearch.addEventListener('click', () => {
                 document.location = '/search';
+            });
+            listPost.addEventListener('click', () => {
+                document.location = '/post';
             });
             listProfile.addEventListener('click', () => {
                 document.location = `/user/${ownProfile.name || "unknown"}`;

@@ -85,19 +85,17 @@ app.post('/searchUser', async (req, res) => {
 })
 
 app.post('/createPost', async (req, res) => {
-    const title = req.body.title;
     const content = req.body.content;
     const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
 
-    if (!title) return res.json({ error: "Please enter a title" });
     if (!content) return res.json({ error: "Please enter some content" });
     if (!user) return res.json({ error: "Please login" });
 
     const filter = { name: req.session.extra_data.ownProfile.name }
-    const post = { title: title, content: content, id: uuidv4() };
+    const post = { id: uuidv4(), content: content, date: Date.now, comments: [], likes: [], dislikes: [] };
 
     try {
-        User.findOneAndUpdate(filter, { $push: { posts: { title: post } } }, { new: true }, (err, doc) => {
+        User.findOneAndUpdate(filter, { $push: { posts: post } }, { new: true }, (err, doc) => {
             if (err) return res.json({ error: "Something went wrong" });
             res.json({ success: "Post created successfully" });
         });

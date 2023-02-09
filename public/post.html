@@ -2,16 +2,16 @@
 <html>
 
 <head>
-    <title>Search</title>
-    <link rel="stylesheet" href="styles.search.css">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="styles.post.css">
     <link rel="stylesheet" href="substyles.sidebar.css">
-    <script src="search.html.js"></script>
+    <script src="post.html.js"></script>
     <link rel="icon" href="logo/logo_trans_no-text.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/0ec4ff65d4.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body class="backgroundAni">
     <div>
         <div id="menu">
             <div id="name">
@@ -22,16 +22,19 @@
             <div id="listTop">
                 <ul>
                     <li id="listHome"><a><i class="fa-solid fa-house-chimney"></i>Home</a></li>
-                    <li id="listSearch" class="listSelected"><a><i class="fa-solid fa-magnifying-glass"></i>Search</a>
-                    </li>
+                    <li id="listSearch"><a><i class="fa-solid fa-magnifying-glass"></i>Search</a></li>
+                    <li id="listPost" class="listSelected"><a><i class="fa-solid fa-message"></i>Create Post</a></li>
                     <li id="listProfile"><a><i class="fa-solid fa-user"></i>Your Profile</a></li>
                     <li id="listSettings"><a><i class="fa-solid fa-gear"></i>Settings</a></li>
                 </ul>
             </div>
         </div>
         <div id="main">
-            <div id="inputFields">
-                <input type="text"></input>
+            <div id="area">
+                <div id="inputField">
+                    <textarea placeholder="Whats poppin'..." name="textarea" id="content"></textarea>
+                </div>
+                <input type="submit" value="Create" id="createPost"></input>
             </div>
         </div>
     </div>
