@@ -20,7 +20,7 @@ const userSchema = new Schema({
     },
     creationDate: {
         type: Date,
-        default: Date.now,
+        default: Date.now(),
     },
     posts: {
         type: Array,

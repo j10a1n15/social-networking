@@ -19,7 +19,7 @@ app.get('/user/*', async (req, res) => {
 
     req.session.extra_data = req.session.extra_data || {};
 
-    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email };
+    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email, posts: requestedUser.posts };
 
     res.sendFile(__dirname + '/public/user.html');
 })
@@ -92,7 +92,7 @@ app.post('/createPost', async (req, res) => {
     if (!user) return res.json({ error: "Please login" });
 
     const filter = { name: req.session.extra_data.ownProfile.name }
-    const post = { id: uuidv4(), content: content, date: Date.now, comments: [], likes: [], dislikes: [] };
+    const post = { id: uuidv4(), content: content, creationDate: Date.now(), comments: [], likes: [], dislikes: [] };
 
     try {
         User.findOneAndUpdate(filter, { $push: { posts: post } }, { new: true }, (err, doc) => {

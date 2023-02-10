@@ -1,3 +1,78 @@
+#posts {
+    height: 100%;
+    width: 100%;
+    float: right;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post {
+    height: 100%;
+    width: 100%;
+    float: right;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--maincolor);
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.postUserPic {
+    height: 100%;
+    max-width: 5%;
+    float: left;
+    border-radius: 50%;
+    border: 2px solid var(--maincolor);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    margin: 10px
+}
+
+.postContentAndCredetialsWrapper {
+    padding-left: 10px;
+}   
+
+.postUserCredentials {
+    display: flex;
+}
+
+.postDisplayName {
+    margin: 0;
+    margin-top: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+    bottom: 0;
+    font-weight: 600;
+}
+
+.postName {
+    margin: 0;
+    margin-top: 10px;
+    padding-right: 10px;
+    font-size: 17px;
+    color: rgb(65, 65, 65);
+    bottom: 0;
+    font-weight: 500;
+}
+
+.postDate {
+    margin: 0;
+    margin-top: 10px;
+    padding-right: 10px;
+    font-size: 17px;
+    color: rgb(65, 65, 65);
+    bottom: 0;
+    font-weight: 500;
+}
+
+.postContent{
+    margin: 0;
+    margin-top: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
 #profile {
     height: 30%;
     width: 80%;
