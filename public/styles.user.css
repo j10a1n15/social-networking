@@ -1,3 +1,39 @@
+#followerDiv {
+    margin-top: 10px;
+}
+
+#followerCount {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+#followerCount :first-child {
+    color: black;
+}
+
+#followerCount :last-child {
+    color: rgb(65, 65, 65);
+}
+
+#followingCount {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+#followingCount :first-child {
+    color: black;
+}       
+
+#followingCount :last-child {
+    color: rgb(65, 65, 65);
+}
+
 #posts {
     height: 100%;
     width: 100%;
@@ -31,7 +67,7 @@
 
 .postContentAndCredetialsWrapper {
     padding-left: 10px;
-}   
+}
 
 .postUserCredentials {
     display: flex;
@@ -66,7 +102,7 @@
     font-weight: 500;
 }
 
-.postContent{
+.postContent {
     margin: 0;
     margin-top: 10px;
     padding-right: 10px;

@@ -43,9 +43,69 @@ window.onload = function () {
             //Profile Info
             const profileDisplayName = document.getElementById('profileDisplayName');
             const profileName = document.getElementById('profileName');
+            const followerDiv = document.getElementById('followerDiv');
 
             profileDisplayName.appendChild(document.createTextNode(requestedProfile.displayName));
             profileName.appendChild(document.createTextNode(requestedProfile.name));
+
+            const followerCount = document.createElement('a');
+            followerCount.id = 'followerCount';
+            const followerCountSpan = document.createElement('span');
+            followerCountSpan.appendChild(document.createTextNode(`${requestedProfile.followers.length}`));
+            const followerTextSpan = document.createElement('span');
+            followerTextSpan.appendChild(document.createTextNode(`Follower${requestedProfile.followers.length > 1 ? 's' : ''}`));
+            followerCount.appendChild(followerCountSpan);
+            followerCount.appendChild(followerTextSpan);
+
+            const followingCount = document.createElement('a');
+            followingCount.id = 'followingCount';
+            const followingCountSpan = document.createElement('span');
+            followingCountSpan.appendChild(document.createTextNode(`${requestedProfile.following.length}`));
+            const followingTextSpan = document.createElement('span');
+            followingTextSpan.appendChild(document.createTextNode(`Following`));
+            followingCount.appendChild(followingCountSpan);
+            followingCount.appendChild(followingTextSpan);
+
+            followerDiv.appendChild(followerCount);
+            followerDiv.appendChild(followingCount);
+
+            //Follow Button
+            const followButton = document.getElementById('followButton');
+
+            if(requestedProfile.followers.includes(ownProfile.name)) {
+                followButton.innerText = 'Unfollow';
+            }
+
+            if (ownProfile.name === requestedProfile.name) {
+                followButton.style.display = 'none';
+            } else {
+                followButton.addEventListener('click', () => {
+                    fetch('/followUser', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: requestedProfile.name, type: followButton.innerText.toLocaleLowerCase() })
+                    })
+                        .then(data => data.json())
+                        .then(data => {
+                            if (data.success) {
+                                followButton.innerText = followButton.innerText === 'Follow' ? 'Unfollow' : 'Follow';
+
+                                //There is probably a better way to do this
+                                if (followButton.innerText === 'Follow') {
+                                    followerCountSpan.innerText = parseInt(followerCountSpan.innerText) - 1;
+                                    followerTextSpan.innerText = `Follower${parseInt(followerCountSpan.innerText) > 1 ? 's' : ''}`;
+                                } else {
+                                    followerCountSpan.innerText = parseInt(followerCountSpan.innerText) + 1;
+                                    followerTextSpan.innerText = `Follower${parseInt(followerCountSpan.innerText) > 1 ? 's' : ''}`;
+                                }
+                            } else {
+                                alert(data.error);
+                            }
+                        });
+                });
+            };
 
             //Posts
             const posts = requestedProfile.posts;
@@ -61,7 +121,7 @@ window.onload = function () {
                 const postUserPic = document.createElement('img');
                 postUserPic.className = 'postUserPic';
                 postUserPic.src = 'https://www.w3schools.com/howto/img_avatar.png';
-                
+
                 const postContentAndCredetialsWrapper = document.createElement('div');
                 postContentAndCredetialsWrapper.className = 'postContentAndCredetialsWrapper';
 
@@ -121,7 +181,7 @@ function handleDate(post) {
             }
             return Math.floor(seconds) + " seconds";
         }
-        return(timeSince(new Date(post.creationDate)) + " ago");
+        return (timeSince(new Date(post.creationDate)) + " ago");
     }
 
     //More than 7 days ago
@@ -131,9 +191,9 @@ function handleDate(post) {
         const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
         const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
         if (year == new Date().getFullYear()) {
-            return(`${month}, ${day}`);
+            return (`${month}, ${day}`);
         } else {
-            return(`${month}, ${day} ${year}`);
+            return (`${month}, ${day} ${year}`);
         }
     }
 }

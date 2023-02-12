@@ -19,7 +19,7 @@ app.get('/user/*', async (req, res) => {
 
     req.session.extra_data = req.session.extra_data || {};
 
-    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email, posts: requestedUser.posts };
+    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email, posts: requestedUser.posts, followers: requestedUser.followers, following: requestedUser.following };
 
     res.sendFile(__dirname + '/public/user.html');
 })
@@ -33,7 +33,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compareSync(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email } };
+    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email, followers: user.followers, following: user.following } };
     res.json({ success: "Logged in successfully" });
 });
 
@@ -62,7 +62,7 @@ app.post("/signup", async (req, res) => {
             name: name,
         });
 
-        req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email } };
+        req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email, followers: user.followers, following: user.following } };
         res.json({ success: "User created successfully" });
     } catch (err) {
         console.error(err)
@@ -91,7 +91,7 @@ app.post('/createPost', async (req, res) => {
     if (!content) return res.json({ error: "Please enter some content" });
     if (!user) return res.json({ error: "Please login" });
 
-    const filter = { name: req.session.extra_data.ownProfile.name }
+    const filter = { name: req.session.extra_data.ownProfile.name };
     const post = { id: uuidv4(), content: content, creationDate: Date.now(), comments: [], likes: [], dislikes: [] };
 
     try {
@@ -102,6 +102,62 @@ app.post('/createPost', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.json({ error: "Something went wrong" });
+    };
+});
+
+app.post('/followUser', async (req, res) => {
+    const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
+    const userToFollow = await User.findOne({ name: req.session.extra_data.requestedUser.name });
+    const type = req.body.type;
+
+    if (!user) return res.json({ error: "Please login" });
+    if (!userToFollow) return res.json({ error: "User not found" });
+    if (!["follow", "unfollow"].includes(type)) return res.json({ error: "Invalid type" });
+    if (user.name === userToFollow.name) return res.json({ error: "You can't follow yourself" });
+
+    if(user.following.includes(userToFollow.name) && type === "follow") return res.json({ error: "You are already following this user" });
+    if(!user.following.includes(userToFollow.name) && type === "unfollow") return res.json({ error: "You are not following this user" });
+
+    if (type === "follow") {
+        const filterFollowing = { name: req.session.extra_data.ownProfile.name };
+        const updateFollowing = { $push: { following: userToFollow.name } };
+        const filterFollowers = { name: req.session.extra_data.requestedUser.name };
+        const updateFollowers = { $push: { followers: user.name } };
+
+        try {
+            User.findOneAndUpdate(filterFollowing, updateFollowing, { new: true }, (err, doc) => {
+                if (err) return res.json({ error: "Something went wrong" });
+            });
+
+            User.findOneAndUpdate(filterFollowers, updateFollowers, { new: true }, (err, doc) => {
+                if (err) return res.json({ error: "Something went wrong" });
+            });
+
+            res.json({ success: "User followed successfully" });
+        } catch (err) {
+            console.error(err);
+            res.json({ error: "Something went wrong" });
+        };
+    } else if (type === "unfollow") {
+        const filterFollowing = { name: req.session.extra_data.ownProfile.name };
+        const updateFollowing = { $pull: { following: userToFollow.name } };
+        const filterFollowers = { name: req.session.extra_data.requestedUser.name };
+        const updateFollowers = { $pull: { followers: user.name } };
+
+        try {
+            User.findOneAndUpdate(filterFollowing, updateFollowing, { new: true }, (err, doc) => {
+                if (err) return res.json({ error: "Something went wrong" });
+            });
+
+            User.findOneAndUpdate(filterFollowers, updateFollowers, { new: true }, (err, doc) => {
+                if (err) return res.json({ error: "Something went wrong" });
+            });
+
+            res.json({ success: "User unfollowed successfully" });
+        } catch (err) {
+            console.error(err);
+            res.json({ error: "Something went wrong" });
+        };
     }
 });
 

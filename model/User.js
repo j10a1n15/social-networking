@@ -25,7 +25,15 @@ const userSchema = new Schema({
     posts: {
         type: Array,
         required: false
-    }
+    },
+    following: {
+        type: Array,
+        required: false
+    },
+    followers: {
+        type: Array,
+        required: false
+    },
 })
 
 module.exports = mongoose.model("User", userSchema);
