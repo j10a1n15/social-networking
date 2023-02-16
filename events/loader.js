@@ -16,7 +16,7 @@ module.exports = function (app, port) {
     }
     mongoose.set('strictQuery', false);
     connectDB();
-    
+
     app.use(express.static('public', { extensions: ['html'] }));
     app.use(express.static('assets'));
     
