@@ -3,6 +3,8 @@ const session = require('express-session');
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+const secret = process.env.SESSION_SECRET || "keyboard_cat";
+
 module.exports = function (app, port) {
     const connectDB = async () => {
         try {
@@ -24,7 +26,7 @@ module.exports = function (app, port) {
     app.use(express.urlencoded({ extended: true }));
 
     app.use(session({
-        secret: 'your_secret_key',
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true
     }))

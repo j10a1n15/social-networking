@@ -24,6 +24,9 @@ Use the following template for its content:
 ```
 PORT=
 DATABASE_URI=
+SESSION_SECRET=
+SALT=
 ```
-While PORT is optional, DATABASE_URI is required to make the website work.
+While PORT, SESSION_SECRET and SALT are optional, DATABASE_URI is required to make the website work.
 For information about how you get your own DATABASE_URI check out the info tab above.
+It's also recommended to use your own SESSION_SECRET.

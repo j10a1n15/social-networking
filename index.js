@@ -8,7 +8,7 @@ const utils = require('./events/utils');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const salt = 10;
+const salt = parseInt(process.env.SALT) || 10;
 
 loadEvents(app, port);
 
@@ -115,8 +115,8 @@ app.post('/followUser', async (req, res) => {
     if (!["follow", "unfollow"].includes(type)) return res.json({ error: "Invalid type" });
     if (user.name === userToFollow.name) return res.json({ error: "You can't follow yourself" });
 
-    if(user.following.includes(userToFollow.name) && type === "follow") return res.json({ error: "You are already following this user" });
-    if(!user.following.includes(userToFollow.name) && type === "unfollow") return res.json({ error: "You are not following this user" });
+    if (user.following.includes(userToFollow.name) && type === "follow") return res.json({ error: "You are already following this user" });
+    if (!user.following.includes(userToFollow.name) && type === "unfollow") return res.json({ error: "You are not following this user" });
 
     if (type === "follow") {
         const filterFollowing = { name: req.session.extra_data.ownProfile.name };
