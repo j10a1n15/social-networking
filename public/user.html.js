@@ -1,4 +1,15 @@
+//https://stackoverflow.com/a/43043658/15031174
+window.addEventListener( "pageshow", function ( event ) {
+    var historyTraversal = event.persisted || 
+                           ( typeof window.performance != "undefined" && 
+                                window.performance.navigation.type === 2 );
+    if ( historyTraversal ) {
+      window.location.reload();
+    }
+  });
+
 window.onload = function () {
+    console.log("RELOAD " + new Date())
     fetch('/get_extra_data')
         .then(async data => {
             try {
