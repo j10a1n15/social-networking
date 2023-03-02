@@ -1,3 +1,33 @@
+.postActionWrapper {
+    position: relative;
+    padding: 5px;
+    margin: 0;
+}
+
+.postAction {
+
+    bottom: 0;
+    position: absolute;
+}
+
+.postLike {
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    font-weight: 600;
+    color: rgb(65, 65, 65);
+    width: fit-content;
+    cursor: pointer;
+}
+
+.postLike:hover>i {
+    transform: scale(1.1);
+}
+
+.postLike>i {
+    padding-right: 5px;
+}
+
 #followerDiv {
     margin-top: 10px;
 }
@@ -28,7 +58,7 @@
 
 #followingCount :first-child {
     color: black;
-}       
+}
 
 #followingCount :last-child {
     color: rgb(65, 65, 65);
@@ -67,6 +97,9 @@
 
 .postContentAndCredetialsWrapper {
     padding-left: 10px;
+    width: 92%;
+    float: right;
+    height: 100%;
 }
 
 .postUserCredentials {
@@ -104,7 +137,8 @@
 
 .postContent {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding-right: 10px;
     font-size: 16px;
 }

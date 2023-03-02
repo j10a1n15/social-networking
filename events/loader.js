@@ -8,9 +8,11 @@ const secret = process.env.SESSION_SECRET || "keyboard_cat";
 module.exports = function (app, port) {
     const connectDB = async () => {
         try {
+            console.log("Connecting to database...");
             mongoose.connect(process.env.DATABASE_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+                family: 4
             });
         } catch (err) {
             console.log(err.message);

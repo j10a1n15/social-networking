@@ -155,6 +155,28 @@ window.onload = function () {
                 postcontent.className = 'postContent';
                 postcontent.appendChild(document.createTextNode(post.content));
 
+                const postActionWrapper = document.createElement('div');
+                postActionWrapper.className = 'postActionWrapper';
+
+                const postActions = document.createElement('div');
+                postActions.className = 'postActions';
+                
+                const postLike = document.createElement('div');
+                postLike.className = 'postLike';
+
+                const postLikeI = document.createElement('i');
+                postLikeI.className = post.likes.includes(ownProfile.name) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                postLike.appendChild(postLikeI);
+
+                const postLikeCount = document.createElement('span');
+                postLikeCount.className = 'postLikeCount';
+                postLikeCount.appendChild(document.createTextNode(post.likes.length));
+
+                postLike.appendChild(postLikeCount);
+
+
+                postActions.appendChild(postLike);
+                postActionWrapper.appendChild(postActions);
 
                 postUserCredentials.appendChild(postUserDisplayname);
                 postUserCredentials.appendChild(postUserName);
@@ -162,14 +184,45 @@ window.onload = function () {
 
                 postContentAndCredetialsWrapper.appendChild(postUserCredentials);
                 postContentAndCredetialsWrapper.appendChild(postcontent);
+                postContentAndCredetialsWrapper.appendChild(postActionWrapper);
 
                 postcontainer.appendChild(postUserPic);
                 postcontainer.appendChild(postContentAndCredetialsWrapper);
 
                 postscontainer.appendChild(postcontainer);
+
+                postLike.addEventListener('click', handleLike);
             });
         });
 };
+
+function handleLike(e){
+    const post = e.currentTarget.parentNode.parentNode.parentNode.parentNode;
+    const like = e.currentTarget;
+    const likeI = e.currentTarget.firstChild;
+
+    fetch('/likePost', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: post.id, type: likeI.className === 'fa-regular fa-heart' ? 'like' : 'unlike'})
+    })
+        .then(data => data.json())
+        .then(data => {
+            if (data.success) {
+                if (likeI.className === 'fa-regular fa-heart') {
+                    likeI.className = 'fa-solid fa-heart';
+                    like.lastChild.innerText = parseInt(like.lastChild.innerText) + 1;
+                } else {
+                    likeI.className = 'fa-regular fa-heart';
+                    like.lastChild.innerText = parseInt(like.lastChild.innerText) - 1;
+                }
+            } else {
+                alert(data.error);
+            }
+        });
+}
 
 function handleDate(post) {
     //Last 7 days ago

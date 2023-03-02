@@ -161,6 +161,39 @@ app.post('/followUser', async (req, res) => {
     }
 });
 
+app.post('/likePost', async (req, res) => {
+    const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
+    const userOfPost = await User.findOne({ name: req.session.extra_data.requestedUser.name });
+
+    const postId = req.body.id;
+    const type = req.body.type;
+    const post = userOfPost.posts.find(post => post.id === postId);
+
+    if (!user) return res.json({ error: "Please login" });
+    if (!userOfPost) return res.json({ error: "User not found" });
+    if (!post) return res.json({ error: "Post not found" });
+    if (!["like", "unlike"].includes(type)) return res.json({ error: "Invalid type" });
+
+    if (post.likes.includes(user.name) && type === "like") return res.json({ error: "You already liked this post" });
+    if (post.dislikes.includes(user.name) && type === "unlike") return res.json({ error: "You already unliked this post" });
+
+    if (type === "like") {
+        const filter = { name: req.session.extra_data.requestedUser.name, "posts.id": postId };
+        const update = { $push: { "posts.$.likes": user.name } };
+        User.findOneAndUpdate(filter, update, { new: true }, (err, doc) => {
+            if (err) return res.json({ error: "Something went wrong" });
+            res.json({ success: "Post liked successfully" });
+        });
+    } else if (type === "unlike") {
+        const filter = { name: req.session.extra_data.requestedUser.name, "posts.id": postId };
+        const update = { $pull: { "posts.$.likes": user.name } };
+        User.findOneAndUpdate(filter, update, { new: true }, (err, doc) => {
+            if (err) return res.json({ error: "Something went wrong" });
+            res.json({ success: "Post unliked successfully" });
+        });
+    }
+});
+
 
 app.post('/check_if_duplicate_name', async (req, res) => {
     const name = req.body.name;
