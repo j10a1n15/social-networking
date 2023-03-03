@@ -36,6 +36,8 @@ window.onload = function () {
             //Search
             const searchInput = document.getElementById('searchInput');
 
+            searchInput.focus();
+
             let typingTimer;
             let doneTypingInterval = 500;
 
