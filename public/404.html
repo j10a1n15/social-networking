@@ -76,9 +76,18 @@
             <h1>Looks like the feather hit the ground</h1>
             <p>And we were not able to find your URL</p>
             <img src="logo/logo_trans_no-text.png" class="image">
-            <a id="helpIWannaLeave" href="/home">Go back to home</a>
+            <a id="helpIWannaLeave" href="/home">Get me out of here</a>
         </div>
     </div>
+
+    <script>
+        const lastUrl = document.referrer;
+        if(lastUrl){
+            const helpIWannaLeave = document.getElementById("helpIWannaLeave");
+            helpIWannaLeave.href = lastUrl;
+            helpIWannaLeave.innerHTML = "Get me back to where I was";
+        }
+    </script>
 </body>
 
 </html>
