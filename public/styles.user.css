@@ -83,22 +83,24 @@
     border: 1px solid var(--maincolor);
     border-radius: 5px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
 }
 
 .postUserPic {
     height: 100%;
     max-width: 5%;
-    float: left;
     border-radius: 50%;
     border: 2px solid var(--maincolor);
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    margin: 10px
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .postContentAndCredetialsWrapper {
     padding-left: 10px;
     width: 92%;
-    float: right;
+    display: inline-block;
     height: 100%;
 }
 
@@ -141,6 +143,7 @@
     margin-bottom: 5px;
     padding-right: 10px;
     font-size: 16px;
+    white-space: normal;
 }
 
 #profile {
