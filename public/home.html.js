@@ -12,7 +12,7 @@ window.onload = function () {
 
             const h1 = document.createElement('h1');
             h1.appendChild(document.createTextNode(`Hello, ${ownProfile.displayName} (${ownProfile.name})!`));
-            document.getElementById("main").appendChild(h1);
+            document.getElementById("mainBackground").appendChild(h1);
 
             //Listmenu Buttons
             const listHome = document.getElementById('listHome');

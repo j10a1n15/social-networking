@@ -1,45 +1,107 @@
 :root {
-    --maincolor: rgb(196, 196, 196);
+    --maincolor: rgb(22, 86, 160);
+    --menucolor: rgba(143, 144, 145, 0.5);
+    --breakcolor: rgba(150, 152, 153, 0.7);
+    --listHover: rgba(206, 206, 206, 0.5);
+    --listSelected: rgba(197, 197, 197, 0.5);
+    --pfpOutline: rgba(0, 0, 0, 0.5);
+    --postOueline: rgba(0, 0, 0, 0.5);
 }
 
 body {
-    background-color: var(--maincolor);
+    background: var(--maincolor);
     margin: 0;
     font-family: Georgia, serif;
-    min-height: 100vh;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+body>div {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.backgroundBlackGradient {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 1%, rgba(0, 0, 0, 0.6) 83%);
 }
 
 #main {
     margin: 0;
-    padding: 10px;
+    padding: 0;
+    height: 100%;
     width: 85%;
     float: right;
     position: relative;
 }
 
+#mainBackground {
+    height: 95%;
+    width: 97%;
+    margin: 0 auto;
+    padding: 10px;
+
+    /*center in the middle verti and hori*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1em;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}	
+
 #menu {
     position: fixed;
-    top: 0;
-    left: 0;
-    margin: 0;
+    margin-left: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+
     min-width: 10%;
     max-width: 12%;
-    height: 100%;
-    background-color: rgb(212, 212, 212);
-    border-radius: 5px;
+    height: 90%;
+
+    background-color: var(--menucolor);
+
+    border-radius: 1em;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    border-right: 2px solid var(--maincolor);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
     font-size: 20px;
 }
 
-/*ListTop*/
+.break {
+    background-color: var(--breakcolor);
+    width: 80%;
+    height: 0.7%;
+    margin: 20px 0 20px 0;
+    border-radius: 1em;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+/*List*/
 #listTop {
     margin: 0;
 }
 
 #listTop>ul {
     padding: 5px;
-    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 #listTop>ul>li {
@@ -55,7 +117,7 @@ body {
 }
 
 #listTop>ul>li:hover {
-    background-color: var(--maincolor);
+    background-color: var(--listHover);
     border-radius: 10px;
 }
 
@@ -75,13 +137,13 @@ body {
     padding-left: 5px;
 }
 
-
 .listSelected {
-    background-color: rgb(179, 179, 179);
+    background-color: var(--listSelected);
     border-radius: 10px;
 }
 
-@media only screen and (max-width: 1026px){
+
+@media only screen and (max-width: 1026px) {
     #listTop>ul>li>a>span {
         display: none;
     }

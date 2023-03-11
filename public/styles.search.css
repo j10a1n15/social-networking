@@ -60,7 +60,7 @@
 .userPfp {
     max-width: 100%;
     border-radius: 100%;
-    border: 2px solid var(--maincolor);
+    border: 2px solid var(--pfpOutline);
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -69,7 +69,6 @@
     padding-top: 10px;
     margin-top: 10px;
     width: 80%;
-    height: 100%;
     background-color: rgb(172, 172, 172);
     border-radius: 50px;
     display: table
