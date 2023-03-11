@@ -65,9 +65,12 @@ window.onload = function () {
                             const userDiv = document.createElement('div');
                             userDiv.classList.add('userDiv');
 
+                            const userPfpWrapper = document.createElement('div');
+                            userPfpWrapper.classList.add('userPfpWrapper');
+                            userPfpWrapper.classList.add('sameLine');
+
                             const userPfp = document.createElement('img');
                             userPfp.classList.add('userPfp');
-                            userPfp.classList.add('sameLine');
                             userPfp.src = user.pfp || "https://www.w3schools.com/howto/img_avatar.png";
 
                             const userDivName = document.createElement('div');
@@ -80,7 +83,9 @@ window.onload = function () {
 
                             userDivText.appendChild(userDivName);
 
-                            userDiv.appendChild(userPfp);
+                            userPfpWrapper.appendChild(userPfp);
+
+                            userDiv.appendChild(userPfpWrapper);
                             userDiv.appendChild(userDivText);
 
                             searchResults.appendChild(userDiv);
