@@ -9,7 +9,6 @@ window.addEventListener( "pageshow", function ( event ) {
   });
 
 window.onload = function () {
-    console.log("RELOAD " + new Date())
     fetch('/get_extra_data')
         .then(async data => {
             try {
@@ -126,7 +125,9 @@ window.onload = function () {
             const posts = requestedProfile.posts;
             const postscontainer = document.getElementById('posts');
 
-            console.log(posts)
+            posts.sort((a, b) => {
+                return new Date(b.creationDate) - new Date(a.creationDate);
+            });
 
             posts.forEach(post => {
                 const postcontainer = document.createElement('div');
@@ -147,9 +148,10 @@ window.onload = function () {
                 postUserDisplayname.className = 'postDisplayName';
                 postUserDisplayname.appendChild(document.createTextNode(requestedProfile.displayName));
 
-                const postUserName = document.createElement('p');
+                const postUserName = document.createElement('a');
                 postUserName.className = 'postName';
-                postUserName.appendChild(document.createTextNode(requestedProfile.name));
+                postUserName.href = `/user/${requestedProfile.name}`;
+                postUserName.appendChild(document.createTextNode(`@${requestedProfile.name}`));
 
                 const postDate = document.createElement('p');
                 postDate.className = 'postDate';
