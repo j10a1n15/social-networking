@@ -1,3 +1,22 @@
+#followButton {
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #000;
+    font-weight: bold;
+    padding: 5px;
+    border: 2px solid #000;
+    border-radius: 1.5em;
+    transition: 0.5s;
+    z-index: 100;
+    cursor: pointer;
+}
+
+#followButton:hover {
+    background-color: #000;
+    color: #fff;
+}
+
 .postActionWrapper {
     position: relative;
     padding: 5px;
