@@ -19,10 +19,15 @@
 
 #searchResults {
     margin: 0;
-    padding-top: 20px;
-    width: 100%;
-    height: 100%;
+    margin-top: 20px;
+    width: auto;
+    height: auto;
     white-space: nowrap;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+    border: 3px solid rgb(182, 182, 182);
+    border-radius: 3px;
 }
 
 .sameLine {
@@ -35,7 +40,7 @@
     width: 100%;
     height: 100%;
     padding-left: 10px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .userDivName>h1 {
@@ -67,16 +72,20 @@
 .userDiv {
     padding: 10px;
     padding-top: 10px;
-    margin-top: 10px;
-    width: 80%;
-    background-color: rgb(172, 172, 172);
-    border-radius: 50px;
+    width: 100%;
     display: table
 }
 
+.userDiv:nth-child(odd) {
+    background-color: var(--searchResultOdd);
+}
+
+.userDiv:nth-child(even) {
+    background-color: var(--searchResultEven);
+}
+
 .userDiv:hover {
-    background-color: rgb(184, 184, 184);
-    border-radius: 50px;
+    opacity: 0.8;
     cursor: pointer;
 }
 

@@ -8,6 +8,8 @@
     --postOutline: rgba(0, 0, 0, 0.5);
     --scrollbartrack : rgba(221, 221, 221, 0.5);
     --scrollbarthumb : rgba(22, 86, 160, 0.7);
+    --searchResultOdd: rgba(255, 255, 255, 0.4);
+    --searchResultEven: rgba(255, 255, 255, 0.3);
 }
 
 body {

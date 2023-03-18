@@ -75,7 +75,7 @@ window.onload = function () {
 
                             const userDivName = document.createElement('div');
                             userDivName.classList.add('userDivName');
-                            userDivName.innerHTML = `<h1>${user.displayName}</h1><br><h3>${user.name}</h3>`;
+                            userDivName.innerHTML = `<h1>${user.displayName}</h1><h3>${user.name}</h3>`;
 
                             const userDivText = document.createElement('div');
                             userDivText.classList.add('userDivText');
