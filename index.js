@@ -19,7 +19,7 @@ app.get('/user/*', async (req, res) => {
 
     req.session.extra_data = req.session.extra_data || {};
 
-    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, email: requestedUser.email, posts: requestedUser.posts, followers: requestedUser.followers, following: requestedUser.following };
+    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, posts: requestedUser.posts, followers: requestedUser.followers, following: requestedUser.following, creationDate: requestedUser.creationDate };
 
     res.sendFile(__dirname + '/public/user.html');
 })
@@ -33,7 +33,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compareSync(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email, followers: user.followers, following: user.following } };
+    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name } };
     res.json({ success: "Logged in successfully" });
 });
 

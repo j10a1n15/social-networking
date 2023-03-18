@@ -27,8 +27,24 @@
     padding-right: 5px;
 }
 
-#followerDiv {
+#profileExtraInfo {
     margin-top: 10px;
+}
+
+#profileAge {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+#profileAge :first-child {
+    color: black;
+}
+
+#profileAge :last-child {
+    color: rgb(65, 65, 65);
 }
 
 #followerCount {

@@ -55,33 +55,45 @@ window.onload = function () {
 
 
             //Profile Info
-            const profileDisplayName = document.getElementById('profileDisplayName');
-            const profileName = document.getElementById('profileName');
-            const followerDiv = document.getElementById('followerDiv');
+            const profileExtraInfo = document.getElementById('profileExtraInfo');
 
+            const profileDisplayName = document.getElementById('profileDisplayName');
             profileDisplayName.appendChild(document.createTextNode(requestedProfile.displayName));
+            const profileName = document.getElementById('profileName');
             profileName.appendChild(document.createTextNode(requestedProfile.name));
 
             const followerCount = document.createElement('a');
             followerCount.id = 'followerCount';
             const followerCountSpan = document.createElement('span');
-            followerCountSpan.appendChild(document.createTextNode(`${requestedProfile.followers.length}`));
+            followerCountSpan.appendChild(document.createTextNode(requestedProfile.followers.length));
             const followerTextSpan = document.createElement('span');
-            followerTextSpan.appendChild(document.createTextNode(`Follower${requestedProfile.followers.length > 1 ? 's' : ''}`));
+            followerTextSpan.appendChild(document.createTextNode(` Follower${requestedProfile.followers.length > 1 ? 's' : ''}`));
             followerCount.appendChild(followerCountSpan);
             followerCount.appendChild(followerTextSpan);
 
             const followingCount = document.createElement('a');
             followingCount.id = 'followingCount';
             const followingCountSpan = document.createElement('span');
-            followingCountSpan.appendChild(document.createTextNode(`${requestedProfile.following.length}`));
+            followingCountSpan.appendChild(document.createTextNode(requestedProfile.following.length));
             const followingTextSpan = document.createElement('span');
-            followingTextSpan.appendChild(document.createTextNode(`Following`));
+            followingTextSpan.appendChild(document.createTextNode(` Following`));
             followingCount.appendChild(followingCountSpan);
             followingCount.appendChild(followingTextSpan);
 
-            followerDiv.appendChild(followerCount);
-            followerDiv.appendChild(followingCount);
+            console.log(requestedProfile)
+
+            const profileAge = document.createElement('a');
+            profileAge.id = 'profileAge';
+            const profileAgeSpan = document.createElement('span');
+            profileAgeSpan.appendChild(document.createTextNode(new Date(requestedProfile.creationDate).toLocaleDateString()));
+            const profileAgeTextSpan = document.createElement('span');
+            profileAgeTextSpan.appendChild(document.createTextNode(` Created`));
+            profileAge.appendChild(profileAgeSpan);
+            profileAge.appendChild(profileAgeTextSpan);
+
+            profileExtraInfo.appendChild(followerCount);
+            profileExtraInfo.appendChild(followingCount);
+            profileExtraInfo.appendChild(profileAge);
 
             //Follow Button
             const followButton = document.getElementById('followButton');
