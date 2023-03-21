@@ -20,6 +20,7 @@ window.onload = function () {
             const listPost = document.getElementById('listPost');
             const listProfile = document.getElementById('listProfile');
             const listSettings = document.getElementById('listSettings');
+            const listLogout = document.getElementById('listLogout');
 
             listHome.addEventListener('click', () => {
                 document.location = '/home';
@@ -35,6 +36,21 @@ window.onload = function () {
             });
             listSettings.addEventListener('click', () => {
                 document.location = '/settings';
+            });
+            listLogout.addEventListener('click', () => {
+                fetch("/logout", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.location = '/';
+                        } else {
+                            alert("Something went wrong. Please try again.");
+                        }
+                    });
             });
         });
 };

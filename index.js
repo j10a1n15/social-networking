@@ -12,6 +12,10 @@ const salt = parseInt(process.env.SALT) || 10;
 
 loadEvents(app, port);
 
+app.post('/logout', (req, res) => {
+    res.json({ success: "Logged out successfully" });
+    req.session.destroy();
+});
 
 app.get('/user/*', async (req, res) => {
     const requestedUser = await User.findOne({ name: req.params[0] }).exec();
