@@ -141,6 +141,24 @@ window.onload = function () {
                 return new Date(b.creationDate) - new Date(a.creationDate);
             });
 
+            if(posts.length === 0) {
+                const noPosts = document.createElement('div');
+                noPosts.id = 'noPosts';
+                noPosts.className = 'center';
+
+                const noPostsImage = document.createElement('img');
+                noPostsImage.src = '../logo/logo_trans_no-text.png';
+                noPostsImage.className = 'image';
+                noPosts.appendChild(noPostsImage);
+
+                const noPostsText = document.createElement('p');
+                noPostsText.id = 'noPostsText';
+                noPostsText.appendChild(document.createTextNode('No posts yet, enjoy the view!'));
+                noPosts.appendChild(noPostsText);
+
+                postscontainer.appendChild(noPosts);
+            }
+
             posts.forEach(post => {
                 const postcontainer = document.createElement('div');
                 postcontainer.id = post.id;
