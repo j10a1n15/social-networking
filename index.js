@@ -23,7 +23,7 @@ app.get('/user/*', async (req, res) => {
 
     req.session.extra_data = req.session.extra_data || {};
 
-    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, posts: requestedUser.posts, followers: requestedUser.followers, following: requestedUser.following, creationDate: requestedUser.creationDate };
+    req.session.extra_data.requestedUser = { displayName: requestedUser.displayName, name: requestedUser.name, posts: requestedUser.posts, followers: requestedUser.followers, following: requestedUser.following, creationDate: requestedUser.creationDate, uuid: requestedUser.uuid };
 
     res.sendFile(__dirname + '/public/user.html');
 })
@@ -37,7 +37,15 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compareSync(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name } };
+    if(!user.uuid) {
+        const uuid = uuidv4();
+        User.findOneAndUpdate({ email: email }, { uuid: uuid }, (err, doc) => {
+            if (err) return res.json({ error: "Something went wrong" });
+        });
+        user.uuid = uuid;
+    }
+
+    req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, uuid: user.uuid } };
     res.json({ success: "Logged in successfully" });
 });
 
@@ -57,16 +65,20 @@ app.post("/signup", async (req, res) => {
     const duplicateName = await User.findOne({ name: name }).exec();
     if (duplicateName) return res.json({ error: "Name already exists" });
 
+    
+
     try {
         const hashedPassword = await bcrypt.hash(password, salt);
+        const uuid = uuidv4();
         const user = await User.create({
+            uuid: uuid,
             displayName: displayName,
             email: email,
             password: hashedPassword,
             name: name,
         });
 
-        req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, email: user.email, followers: user.followers, following: user.following } };
+        req.session.extra_data = { ownProfile: { displayName: user.displayName, name: user.name, uuid: uuid } };
         res.json({ success: "User created successfully" });
     } catch (err) {
         console.error(err)
@@ -110,8 +122,8 @@ app.post('/createPost', async (req, res) => {
 });
 
 app.post('/followUser', async (req, res) => {
-    const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
-    const userToFollow = await User.findOne({ name: req.session.extra_data.requestedUser.name });
+    const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid });
+    const userToFollow = await User.findOne({ uuid: req.session.extra_data.requestedUser.uuid });
     const type = req.body.type;
 
     if (!user) return res.json({ error: "Please login" });
@@ -119,14 +131,14 @@ app.post('/followUser', async (req, res) => {
     if (!["follow", "unfollow"].includes(type)) return res.json({ error: "Invalid type" });
     if (user.name === userToFollow.name) return res.json({ error: "You can't follow yourself" });
 
-    if (user.following.includes(userToFollow.name) && type === "follow") return res.json({ error: "You are already following this user" });
-    if (!user.following.includes(userToFollow.name) && type === "unfollow") return res.json({ error: "You are not following this user" });
+    if (user.following.includes(userToFollow.uuid) && type === "follow") return res.json({ error: "You are already following this user" });
+    if (!user.following.includes(userToFollow.uuid) && type === "unfollow") return res.json({ error: "You are not following this user" });
 
     if (type === "follow") {
-        const filterFollowing = { name: req.session.extra_data.ownProfile.name };
-        const updateFollowing = { $push: { following: userToFollow.name } };
-        const filterFollowers = { name: req.session.extra_data.requestedUser.name };
-        const updateFollowers = { $push: { followers: user.name } };
+        const filterFollowing = { uuid: req.session.extra_data.ownProfile.uuid };
+        const updateFollowing = { $push: { following: userToFollow.uuid } };
+        const filterFollowers = { uuid: req.session.extra_data.requestedUser.uuid };
+        const updateFollowers = { $push: { followers: user.uuid } };
 
         try {
             User.findOneAndUpdate(filterFollowing, updateFollowing, { new: true }, (err, doc) => {
@@ -143,10 +155,10 @@ app.post('/followUser', async (req, res) => {
             res.json({ error: "Something went wrong" });
         };
     } else if (type === "unfollow") {
-        const filterFollowing = { name: req.session.extra_data.ownProfile.name };
-        const updateFollowing = { $pull: { following: userToFollow.name } };
-        const filterFollowers = { name: req.session.extra_data.requestedUser.name };
-        const updateFollowers = { $pull: { followers: user.name } };
+        const filterFollowing = { uuid: req.session.extra_data.ownProfile.uuid };
+        const updateFollowing = { $pull: { following: userToFollow.uuid } };
+        const filterFollowers = { uuid: req.session.extra_data.requestedUser.uuid };
+        const updateFollowers = { $pull: { followers: user.uuid } };
 
         try {
             User.findOneAndUpdate(filterFollowing, updateFollowing, { new: true }, (err, doc) => {
@@ -166,8 +178,8 @@ app.post('/followUser', async (req, res) => {
 });
 
 app.post('/likePost', async (req, res) => {
-    const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
-    const userOfPost = await User.findOne({ name: req.session.extra_data.requestedUser.name });
+    const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid });
+    const userOfPost = await User.findOne({ uuid: req.session.extra_data.requestedUser.uuid });
 
     const postId = req.body.id;
     const type = req.body.type;
@@ -178,19 +190,19 @@ app.post('/likePost', async (req, res) => {
     if (!post) return res.json({ error: "Post not found" });
     if (!["like", "unlike"].includes(type)) return res.json({ error: "Invalid type" });
 
-    if (post.likes.includes(user.name) && type === "like") return res.json({ error: "You already liked this post" });
-    if (post.dislikes.includes(user.name) && type === "unlike") return res.json({ error: "You already unliked this post" });
+    if (post.likes.includes(user.uuid) && type === "like") return res.json({ error: "You already liked this post" });
+    if (post.dislikes.includes(user.uuid) && type === "unlike") return res.json({ error: "You already unliked this post" });
 
     if (type === "like") {
-        const filter = { name: req.session.extra_data.requestedUser.name, "posts.id": postId };
-        const update = { $push: { "posts.$.likes": user.name } };
+        const filter = { uuid: req.session.extra_data.requestedUser.uuid, "posts.id": postId };
+        const update = { $push: { "posts.$.likes": user.uuid } };
         User.findOneAndUpdate(filter, update, { new: true }, (err, doc) => {
             if (err) return res.json({ error: "Something went wrong" });
             res.json({ success: "Post liked successfully" });
         });
     } else if (type === "unlike") {
-        const filter = { name: req.session.extra_data.requestedUser.name, "posts.id": postId };
-        const update = { $pull: { "posts.$.likes": user.name } };
+        const filter = { uuid: req.session.extra_data.requestedUser.uuid, "posts.id": postId };
+        const update = { $pull: { "posts.$.likes": user.uuid } };
         User.findOneAndUpdate(filter, update, { new: true }, (err, doc) => {
             if (err) return res.json({ error: "Something went wrong" });
             res.json({ success: "Post unliked successfully" });

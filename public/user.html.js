@@ -98,7 +98,7 @@ window.onload = function () {
             //Follow Button
             const followButton = document.getElementById('followButton');
 
-            if(requestedProfile.followers.includes(ownProfile.name)) {
+            if(requestedProfile.followers.includes(ownProfile.uuid)) {
                 followButton.innerText = 'Unfollow';
             }
 
@@ -201,7 +201,7 @@ window.onload = function () {
                 postLike.className = 'postLike';
 
                 const postLikeI = document.createElement('i');
-                postLikeI.className = post.likes.includes(ownProfile.name) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                postLikeI.className = post.likes.includes(ownProfile.uuid) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
                 postLike.appendChild(postLikeI);
 
                 const postLikeCount = document.createElement('span');
