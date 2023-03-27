@@ -12,6 +12,60 @@ const salt = parseInt(process.env.SALT) || 10;
 
 loadEvents(app, port);
 
+
+app.post('/change_username', async (req, res) => {
+    const newusername = req.body.newusername;
+
+    const user = await User.findOne({ name: newusername }).exec();
+    if (user) return res.json({ error: "Username already taken" });
+
+    User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { name: newusername }, (err, doc) => {
+        if (err) return res.json({ error: "Something went wrong" });
+    });
+
+    res.json({ success: "Username changed successfully" });
+});
+
+app.post('/change_displayname', async (req, res) => {
+    const newdisplayname = req.body.newdisplayname;
+
+    User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { displayName: newdisplayname }, (err, doc) => {
+        if (err) return res.json({ error: "Something went wrong" });
+    });
+
+    res.json({ success: "Displayname changed successfully" });
+});
+
+app.post('/change_email', async (req, res) => {
+    const oldemail = req.body.oldemail;
+    const newemail = req.body.newemail;
+    const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
+
+    if (user.email != oldemail) return res.json({ error: "Incorrect email" });
+
+    User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { email: newemail }, (err, doc) => {
+        if (err) return res.json({ error: "Something went wrong" });
+    });
+
+    res.json({ success: "Email changed successfully" });
+});
+
+app.post('/change_password', async (req, res) => {
+    const oldpw = req.body.oldpw;
+    const newpw = req.body.newpw;
+    const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
+
+    const match = bcrypt.compareSync(oldpw, user.password);
+    if (!match) return res.json({ error: "Incorrect password" });
+
+    const hashedPassword = await bcrypt.hash(newpw, salt);
+    User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { password: hashedPassword }, (err, doc) => {
+        if (err) return res.json({ error: "Something went wrong" });
+    });
+
+    res.json({ success: "Password changed successfully" });
+});
+
 app.post('/logout', (req, res) => {
     res.json({ success: "Logged out successfully" });
     req.session.destroy();
