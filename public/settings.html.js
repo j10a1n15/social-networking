@@ -33,6 +33,16 @@ window.onload = function () {
                 document.location = '/settings';
             });
 
+
+            //Category Close Buttons
+            const closeCredentials = document.getElementById('closeCredentials');
+
+            closeCredentials.addEventListener('click', () => {
+                document.getElementsByClassName("credentialsCategoryContentBody")[0].classList.toggle("hidden");
+                document.getElementById("closeCredentials").classList.toggle("fa-rotate-90")
+            });
+
+
             //Password
             const oldpw = document.getElementById('settingsOldPassword');
             const newpw = document.getElementById('settingsNewPassword');
@@ -41,6 +51,9 @@ window.onload = function () {
 
             submitpw.addEventListener('click', () => {
                 if (newpw.value != confirmnewpw.value) return alert("Passwords do not match.");
+
+                if(newpw.length == 0 || confirmnewpw.length == 0 || oldpw.length == 0) return alert("Please fill out all fields.");
+
                 fetch('/change_password', {
                     method: 'POST',
                     headers: {
@@ -79,6 +92,9 @@ window.onload = function () {
 
             submitemail.addEventListener('click', () => {
                 if (newemail.value != confirmnewemail.value) return alert("Emails do not match.");
+
+                if(newemail.length == 0 || confirmnewemail.length == 0 || oldemail.length == 0) return alert("Please fill out all fields.");
+
                 fetch('/change_email', {
                     method: 'POST',
                     headers: {
@@ -110,12 +126,15 @@ window.onload = function () {
             });
 
             //Displayname
-            const newdisplayname = document.getElementById('settingsNewDisplayName');
-            const confirmnewdisplayname = document.getElementById('settingsConfirmDisplayName');
-            const submitdisplayname = document.getElementById('settingsButtonChangeDisplayName');
+            const newdisplayname = document.getElementById('settingsNewDisplayname');
+            const confirmnewdisplayname = document.getElementById('settingsConfirmDisplayname');
+            const submitdisplayname = document.getElementById('settingsButtonChangeDisplayname');
 
             submitdisplayname.addEventListener('click', () => {
                 if (newdisplayname.value != confirmnewdisplayname.value) return alert("Displaynames do not match.");
+
+                if(newdisplayname.length == 0 || confirmnewdisplayname.length == 0) return alert("Please fill out all fields.");
+
                 fetch('/change_displayname', {
                     method: 'POST',
                     headers: {
@@ -152,6 +171,9 @@ window.onload = function () {
 
             submitusername.addEventListener('click', () => {
                 if (newusername.value != confirmnewusername.value) return alert("Usernames do not match.");
+
+                if(newusername.length == 0 || confirmnewusername.length == 0) return alert("Please fill out all fields.");
+
                 fetch('/change_username', {
                     method: 'POST',
                     headers: {

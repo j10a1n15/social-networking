@@ -16,6 +16,11 @@ loadEvents(app, port);
 app.post('/change_username', async (req, res) => {
     const newusername = req.body.newusername;
 
+    if(newusername.length == 0) return res.json({ error: "Username cannot be empty" });
+
+    if (!utils.isValidId(newusername)) return res.json({ error: "Invalid Name" });
+    if (utils.containsInvalidCharacters(newusername)) return res.json({ error: "Invalid Name" });
+
     const user = await User.findOne({ name: newusername }).exec();
     if (user) return res.json({ error: "Username already taken" });
 
@@ -29,6 +34,8 @@ app.post('/change_username', async (req, res) => {
 app.post('/change_displayname', async (req, res) => {
     const newdisplayname = req.body.newdisplayname;
 
+    if(newdisplayname.length == 0) return res.json({ error: "Displayname cannot be empty" });
+
     User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { displayName: newdisplayname }, (err, doc) => {
         if (err) return res.json({ error: "Something went wrong" });
     });
@@ -40,6 +47,10 @@ app.post('/change_email', async (req, res) => {
     const oldemail = req.body.oldemail;
     const newemail = req.body.newemail;
     const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
+
+    if(newemail.length == 0) return res.json({ error: "Email cannot be empty" });
+
+    if (!utils.isValidEmail(newemail)) return res.json({ error: "Invalid Email" });
 
     if (user.email != oldemail) return res.json({ error: "Incorrect email" });
 
@@ -54,6 +65,10 @@ app.post('/change_password', async (req, res) => {
     const oldpw = req.body.oldpw;
     const newpw = req.body.newpw;
     const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
+
+    if(newpw.length == 0) return res.json({ error: "Password cannot be empty" });
+
+    if (!utils.isValidPassword(newpw)) return res.json({ error: "Invalid Password" })
 
     const match = bcrypt.compareSync(oldpw, user.password);
     if (!match) return res.json({ error: "Incorrect password" });

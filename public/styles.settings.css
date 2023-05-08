@@ -1,3 +1,12 @@
+.hidden {
+    display: none !important;
+}
+
+#settingsContentTitle  > *{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 #settingsContentBody {
     display: flex;
     justify-content: space-evenly;
@@ -8,11 +17,30 @@
 }
 
 #settingsContentBodyItem {
-    width: 10%;
+    width: 18%;
     margin-top: 15px;
     padding: 20px 25px 25px 25px;
     border-radius: 15px;
     box-shadow: 0px 10px 20px 1px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+}
+
+#settingsContentBodyItemContentInput > input{
+    width: 100%;
+    box-sizing: border-box;    
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+}
+
+#settingsContentBodyItemContentButton > button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
 }
 
 #settings {
