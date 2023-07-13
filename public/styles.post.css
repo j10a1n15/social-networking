@@ -12,11 +12,8 @@
 
 #flairDropdownButton{
     height: 100%;
-    vertical-align: center;
-}
-
-#flairDropdownButtonIcon {
-    vertical-align: center;
+    display: flex;
+    align-items: center;
 }
 
 #flairDropdownButtonIcon>i {
@@ -43,7 +40,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 80%;
+    height: 70%;
 }
 
 
