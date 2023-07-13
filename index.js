@@ -5,6 +5,7 @@ require('dotenv').config();
 const User = require('./model/User');
 const loadEvents = require('./events/loader');
 const utils = require('./events/utils');
+const flairs = require("./config/flairs.json");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ loadEvents(app, port);
 app.post('/change_username', async (req, res) => {
     const newusername = req.body.newusername;
 
-    if(newusername.length == 0) return res.json({ error: "Username cannot be empty" });
+    if (newusername.length == 0) return res.json({ error: "Username cannot be empty" });
 
     if (!utils.isValidId(newusername)) return res.json({ error: "Invalid Name" });
     if (utils.containsInvalidCharacters(newusername)) return res.json({ error: "Invalid Name" });
@@ -36,7 +37,7 @@ app.post('/change_username', async (req, res) => {
 app.post('/change_displayname', async (req, res) => {
     const newdisplayname = req.body.newdisplayname;
 
-    if(newdisplayname.length == 0) return res.json({ error: "Displayname cannot be empty" });
+    if (newdisplayname.length == 0) return res.json({ error: "Displayname cannot be empty" });
 
     User.findOneAndUpdate({ uuid: req.session.extra_data.ownProfile.uuid }, { displayName: newdisplayname }, (err, doc) => {
         if (err) return res.json({ error: "Something went wrong" });
@@ -51,7 +52,7 @@ app.post('/change_email', async (req, res) => {
     const newemail = req.body.newemail;
     const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
 
-    if(newemail.length == 0) return res.json({ error: "Email cannot be empty" });
+    if (newemail.length == 0) return res.json({ error: "Email cannot be empty" });
 
     if (!utils.isValidEmail(newemail)) return res.json({ error: "Invalid Email" });
 
@@ -70,7 +71,7 @@ app.post('/change_password', async (req, res) => {
     const newpw = req.body.newpw;
     const user = await User.findOne({ uuid: req.session.extra_data.ownProfile.uuid }).exec();
 
-    if(newpw.length == 0) return res.json({ error: "Password cannot be empty" });
+    if (newpw.length == 0) return res.json({ error: "Password cannot be empty" });
 
     if (!utils.isValidPassword(newpw)) return res.json({ error: "Invalid Password" })
 
@@ -113,7 +114,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compareSync(password, user.password);
     if (!match) return res.json({ error: "Incorrect Email or password" });
 
-    if(!user.uuid) {
+    if (!user.uuid) {
         const uuid = uuidv4();
         User.findOneAndUpdate({ email: email }, { uuid: uuid }, (err, doc) => {
             if (err) return res.json({ error: "Something went wrong" });
@@ -142,7 +143,7 @@ app.post("/signup", async (req, res) => {
     const duplicateName = await User.findOne({ name: name }).exec();
     if (duplicateName) return res.json({ error: "Name already exists" });
 
-    
+
 
     try {
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -180,15 +181,16 @@ app.post('/searchUser', async (req, res) => {
 
 //Create Post
 app.post('/createPost', async (req, res) => {
+    console.log(req.body)
     const content = req.body.content;
-    const flair = req.body.flair;
+    const flair = req.body.flair || null;
     const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
 
     if (!content) return res.json({ error: "Please enter some content" });
     if (!user) return res.json({ error: "Please login" });
 
     const filter = { name: req.session.extra_data.ownProfile.name };
-    const post = { id: uuidv4(), content: content, flair: flair || null,creationDate: Date.now(), comments: [], likes: [], dislikes: [] };
+    const post = { id: uuidv4(), content: content, flair: flair || null, creationDate: Date.now(), comments: [], likes: [], dislikes: [] };
 
     try {
         User.findOneAndUpdate(filter, { $push: { posts: post } }, { new: true }, (err, doc) => {
@@ -290,6 +292,11 @@ app.post('/likePost', async (req, res) => {
             res.json({ success: "Post unliked successfully" });
         });
     }
+});
+
+//Flairs
+app.get('/getFlairs', async (req, res) => {
+    res.json(flairs)
 });
 
 //Check if duplicate name

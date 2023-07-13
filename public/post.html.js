@@ -1,3 +1,5 @@
+let selectedFlair = null;
+
 window.onload = function () {
     fetch('/get_extra_data')
         .then(async data => {
@@ -10,8 +12,17 @@ window.onload = function () {
 
             const ownProfile = data.ownProfile;
 
-            const content = document.getElementById('content');
 
+            let flairs;
+            try {
+                flairs = await fetch('/getFlairs').then(data => data.json());
+            } catch (err) {
+                console.error(err);
+                return alert("An error occured while fetching flairs");
+            }
+
+
+            const content = document.getElementById('content');
             content.focus();
 
             document.getElementById('createPost').addEventListener('click', async () => {
@@ -24,7 +35,8 @@ window.onload = function () {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        content: content.value
+                        content: content.value,
+                        flair: selectedFlair ? selectedFlair.name : null
                     })
                 }).then(data => data.json());
 
@@ -32,6 +44,43 @@ window.onload = function () {
                 alert(data.success);
                 content.value = "";
             });
+
+
+            const flairDropdownButton = document.getElementById('flairDropdownButton');
+            const flairDropdown = document.getElementById('flairDropdown');
+            const flairDropdownContainer = document.getElementById('flairDropdownContainer');
+
+
+            flairDropdownButton.addEventListener('click', () => {
+                flairDropdown.classList.toggle('hidden');
+            });
+
+
+
+            flairs.forEach(flair => {
+                const option = document.createElement('option');
+                option.value = flair.name;
+                option.innerText = flair.name;
+                option.classList.add('flair');
+                option.classList.add(flair.name);
+                option.style.backgroundColor = flair.color;
+
+                option.addEventListener('click', () => {
+                    if (selectedFlair == flair) {
+                        selectedFlair = null;
+                        document.getElementsByClassName(flair.name)[0].classList.remove('selected');
+                    } else {
+                        selectedFlair = flair;
+                        [...document.getElementsByClassName("flair")].forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                        document.getElementsByClassName(flair.name)[0].classList.add('selected');
+                    }
+                });
+                flairDropdownContainer.appendChild(option);
+            });
+            flairDropdown.appendChild(flairDropdownContainer);
+
 
 
             //Listmenu Buttons

@@ -196,3 +196,9 @@ body>div {
     background: var(--scrollbarthumb);
     border-radius: 5px;
 }
+
+.flair {
+    transition: 0.5s;
+    border-radius: 8px;
+    border: 3px solid rgba(0, 0, 0, 0.3);
+}

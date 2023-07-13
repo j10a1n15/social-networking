@@ -1,0 +1,138 @@
+[
+    {
+        "name": "TrendingNow",
+        "color": "#FF8800"
+    },
+    {
+        "name": "Throwback",
+        "color": "#009688"
+    },
+    {
+        "name": "Inspiration",
+        "color": "#FFC107"
+    },
+    {
+        "name": "Foodie",
+        "color": "#FF5722"
+    },
+    {
+        "name": "Wanderlust",
+        "color": "#03A9F4"
+    },
+    {
+        "name": "ViralVideos",
+        "color": "#FF0000"
+    },
+    {
+        "name": "HealthyLifestyle",
+        "color": "#00CC66"
+    },
+    {
+        "name": "ThrowbackThursday",
+        "color": "#9900CC"
+    },
+    {
+        "name": "DIYProjects",
+        "color": "#FF9933"
+    },
+    {
+        "name": "MondayMotivation",
+        "color": "#FF6600"
+    },
+    {
+        "name": "TechGeeks",
+        "color": "#607D8B"
+    },
+    {
+        "name": "FitnessFreaks",
+        "color": "#4CAF50"
+    },
+    {
+        "name": "Bookworms",
+        "color": "#673AB7"
+    },
+    {
+        "name": "PetLovers",
+        "color": "#FF9800"
+    },
+    {
+        "name": "Fashionistas",
+        "color": "#E91E63"
+    },
+    {
+        "name": "ArtEnthusiasts",
+        "color": "#FF6F00"
+    },
+    {
+        "name": "TravelBuddies",
+        "color": "#FFCC00"
+    },
+    {
+        "name": "GamingCommunity",
+        "color": "#0099FF"
+    },
+    {
+        "name": "PhotographyLovers",
+        "color": "#FF6600"
+    },
+    {
+        "name": "OutdoorAdventures",
+        "color": "#339966"
+    },
+    {
+        "name": "StartupLife",
+        "color": "#CC3333"
+    },
+    {
+        "name": "MusicJunkies",
+        "color": "#6600CC"
+    },
+    {
+        "name": "SummerVibes",
+        "color": "#FFC107"
+    },
+    {
+        "name": "HalloweenFun",
+        "color": "#FF5722"
+    },
+    {
+        "name": "HolidayCheer",
+        "color": "#FF4081"
+    },
+    {
+        "name": "NewYearNewMe",
+        "color": "#2196F3"
+    },
+    {
+        "name": "FestivalFever",
+        "color": "#9C27B0"
+    },
+    {
+        "name": "BirthdayBash",
+        "color": "#FF5252"
+    },
+    {
+        "name": "SummerFestival",
+        "color": "#FF9900"
+    },
+    {
+        "name": "WinterWonderland",
+        "color": "#0066FF"
+    },
+    {
+        "name": "ValentinesDay",
+        "color": "#FF3399"
+    },
+    {
+        "name": "PrideMonth",
+        "color": "#FF0066"
+    },
+    {
+        "name": "BlackFridayDeals",
+        "color": "#333333"
+    },
+    {
+        "name": "EarthDay",
+        "color": "#009933"
+    }
+]
