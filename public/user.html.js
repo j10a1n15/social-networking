@@ -1,12 +1,12 @@
 //https://stackoverflow.com/a/43043658/15031174
-window.addEventListener( "pageshow", function ( event ) {
-    var historyTraversal = event.persisted || 
-                           ( typeof window.performance != "undefined" && 
-                                window.performance.navigation.type === 2 );
-    if ( historyTraversal ) {
-      window.location.reload();
+window.addEventListener("pageshow", function (event) {
+    var historyTraversal = event.persisted ||
+        (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+    if (historyTraversal) {
+        window.location.reload();
     }
-  });
+});
 
 window.onload = function () {
     fetch('/get_extra_data')
@@ -16,6 +16,14 @@ window.onload = function () {
             } catch (err) {
                 console.error(err);
                 if (!alert("You are not logged in. Please login to continue.")) return document.location = '/';
+            }
+
+            let flairs;
+            try {
+                flairs = await fetch('/getFlairs').then(data => data.json());
+            } catch (err) {
+                console.error(err);
+                return alert("An error occured while fetching flairs");
             }
 
             const ownProfile = data.ownProfile;
@@ -49,7 +57,7 @@ window.onload = function () {
                 document.location = '/settings';
             });
 
-            if(ownProfile.name === requestedProfile.name) {
+            if (ownProfile.name === requestedProfile.name) {
                 listProfile.classList.add("listSelected");
             }
 
@@ -98,7 +106,7 @@ window.onload = function () {
             //Follow Button
             const followButton = document.getElementById('followButton');
 
-            if(requestedProfile.followers.includes(ownProfile.uuid)) {
+            if (requestedProfile.followers.includes(ownProfile.uuid)) {
                 followButton.innerText = 'Unfollow';
             }
 
@@ -141,7 +149,7 @@ window.onload = function () {
                 return new Date(b.creationDate) - new Date(a.creationDate);
             });
 
-            if(posts.length === 0) {
+            if (posts.length === 0) {
                 const noPosts = document.createElement('div');
                 noPosts.id = 'noPosts';
                 noPosts.className = 'center';
@@ -187,6 +195,13 @@ window.onload = function () {
                 postDate.className = 'postDate';
                 postDate.appendChild(document.createTextNode(handleDate(post)));
 
+                const postFlair = document.createElement('div');
+                if (post.flair) {
+                    postFlair.className = 'flair postFlair';
+                    postFlair.style = `--accentcolor: ${flairs.filter(flair => flair.name === post.flair)[0].color}`
+                    postFlair.appendChild(document.createTextNode(post.flair));
+                }
+
                 const postcontent = document.createElement('p');
                 postcontent.className = 'postContent';
                 postcontent.appendChild(document.createTextNode(post.content));
@@ -196,7 +211,7 @@ window.onload = function () {
 
                 const postActions = document.createElement('div');
                 postActions.className = 'postActions';
-                
+
                 const postLike = document.createElement('div');
                 postLike.className = 'postLike';
 
@@ -217,6 +232,7 @@ window.onload = function () {
                 postUserCredentials.appendChild(postUserDisplayname);
                 postUserCredentials.appendChild(postUserName);
                 postUserCredentials.appendChild(postDate);
+                postUserCredentials.appendChild(postFlair);
 
                 postContentAndCredetialsWrapper.appendChild(postUserCredentials);
                 postContentAndCredetialsWrapper.appendChild(postcontent);
@@ -232,7 +248,7 @@ window.onload = function () {
         });
 };
 
-function handleLike(e){
+function handleLike(e) {
     const post = e.currentTarget.parentNode.parentNode.parentNode.parentNode;
     const like = e.currentTarget;
     const likeI = e.currentTarget.firstChild;
@@ -242,7 +258,7 @@ function handleLike(e){
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: post.id, type: likeI.className === 'fa-regular fa-heart' ? 'like' : 'unlike'})
+        body: JSON.stringify({ id: post.id, type: likeI.className === 'fa-regular fa-heart' ? 'like' : 'unlike' })
     })
         .then(data => data.json())
         .then(data => {
