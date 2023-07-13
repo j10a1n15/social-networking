@@ -181,7 +181,6 @@ app.post('/searchUser', async (req, res) => {
 
 //Create Post
 app.post('/createPost', async (req, res) => {
-    console.log(req.body)
     const content = req.body.content;
     const flair = req.body.flair || null;
     const user = await User.findOne({ name: req.session.extra_data.ownProfile.name });
