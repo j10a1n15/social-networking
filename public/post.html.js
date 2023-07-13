@@ -63,7 +63,7 @@ window.onload = function () {
                 option.innerText = flair.name;
                 option.classList.add('flair');
                 option.classList.add(flair.name);
-                option.style.backgroundColor = flair.color;
+                option.style = `--accentcolor: ${flair.color};`
 
                 option.addEventListener('click', () => {
                     if (selectedFlair == flair) {
