@@ -30,3 +30,22 @@ SALT=
 While PORT, SESSION_SECRET and SALT are optional, DATABASE_URI is required to make the website work.
 For information about how you get your own DATABASE_URI check out the info tab above.
 It's also recommended to use your own SESSION_SECRET.
+
+## Features
+
+### Login/Signup
+Includes password requirements.
+![Login](github/images/login.png)
+![Signup](github/images/signup.png)
+
+### Homepage
+Not working yet.
+![Homepage](github/images/homepage.png)
+
+### Posting
+Includes tons of selectable flairs.
+![Posting](github/images/posting.png)
+
+### Profile
+This includes all of your own posts, as well as some actions with those posts.
+![Profile](github/images/profile.png)
